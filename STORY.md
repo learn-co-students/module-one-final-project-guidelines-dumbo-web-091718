@@ -1,6 +1,6 @@
 
 **USER**
-As a user i should be able to sign-in for pet adoption
+
 As a user I should able to have basic attributes like: name, age, city, country
 As a user I should able to chose my pet_type
 
