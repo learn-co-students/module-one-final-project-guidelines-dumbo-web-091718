@@ -35,6 +35,6 @@ puts "Any skills you would like your pet to have?"
 puts "Based on your application we think #{pet_name} would be perfect for you! Here's a little more information about them!"
 #list of pet info
 puts "Do you want to give #{pet_name} a forever home?"
-  adopt? = gets.chomp
+  adopt = gets.chomp
 
  # User.new('Jules')
