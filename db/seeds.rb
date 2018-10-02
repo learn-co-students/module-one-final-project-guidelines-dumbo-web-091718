@@ -30,3 +30,14 @@ stormy = Pet.create({name: "Stormy", kind: "cat", temperament: "shy", age: 13})
 miss_kitty = Pet.create({name: "Miss Kitty", kind: "cat", temperament: "shy", age: 8})
 
 # dogs
+
+max = Pet.create({name: "Max", kind: "Dog", temperament: "Calm", age: 1})
+charlie= Pet.create({name: "Charlie", kind: "Dog", temperament: "Friendly", age: 2})
+cooper = Pet.create({name: "Cooper", kind: "Dog", temperament: "Calm", age: 3})
+buddy  = Pet.create({name: "Buddy", kind: "Dog", temperament: "Shy", age: 4})
+jack   = Pet.create({name: "Jack", kind: "Dog", temperament: "Shy", age: 5})
+rocky  = Pet.create({name: "Rocky", kind: "Dog", temperament: "Calm", age: 6})
+oliver = Pet.create({name: "Oliver", kind: "Dog", temperament: "Calm", age: 3})
+bear   = Pet.create({name: "Bear", kind: "Dog", temperament: "Friendly", age: 4})
+duke   = Pet.create({name: "Duck", kind: "Dog", temperament: "Friendly", age: 2})
+tucker = Pet.create({name: "Tucker", kind: "Dog", temperament: "Shy", age: 1})
