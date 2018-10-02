@@ -15,6 +15,7 @@ kiwi = Pet.create({name: "Kiwi", kind: "bird", temperament: "shy", age: 2})
 flyboy = Pet.create({name: "Flyboy", kind: "bird", temperament: "shy", age: 3})
 whooshie = Pet.create({name: "Whooshie", kind: "bird", temperament: "shy", age: 60})
 paco = Pet.create({name: "Paco", kind: "bird", temperament: "shy", age: 6})
+gary = Pet.create({name: "Gary", kind: "bird", temperament: "shy", age: 7})
 
 # cats
 
