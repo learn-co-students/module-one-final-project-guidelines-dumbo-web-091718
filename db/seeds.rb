@@ -1,5 +1,4 @@
 
-
 max = Pet.create({name: "Max", kind: "Dog", temperament: "Grumpy", age: 1})
 charlie= Pet.create({name: "Charlie", kind: "Dog", temperament: "Lazy", age: 2})
 cooper = Pet.create({name: "Cooper", kind: "Dog", temperament: "Mild", age: 3})
