@@ -1,5 +1,5 @@
 require_relative '../config/environment'
-<<<<<<< HEAD
+
 #
 # # _________________________________________________
 # # def welcome_and_get_name
@@ -60,26 +60,39 @@ require_relative '../config/environment'
 # end
 #
 # run_app
-=======
 
 #create the user from the form
 def create_user
   puts "Whats your name?"
   name = gets.chomp
-  new_user = User.create({name: name })
+  puts "Whats your city?"
+   city = gets.chomp
+  puts "Monthly income?"
+  income = gets.chomp
+  new_user = User.create({name: name, city: city, income: income})
 end
 
 # get the pet based on user preference
 def get_users_pet
   puts "What kind of pet would you want"
   user_pet_kind = gets.chomp
+  puts "What kind of temper would you want your pet to have?( Calm | Shy | Friendly )"
+  pet_temperament = gets.chomp
 
-    Pet.all.select do |pet|
-    if  pet.kind === user_pet_kind
-      puts "Here is your pet, it's name is #{pet.name}"
-     end
-   end
+# pet =  Pet.all.find do |pet|
+#     pet.kind == user_pet_kind && pet.temperament == pet_temperament
+#   end
 
+pet_kind = Pet.all.select do |pet|
+  pet.kind == user_pet_kind
+end
+
+choice = pet_kind.find do |choice|
+  choice.temperament == pet_temperament
+end
+
+  # binding.pry
+  puts "Here is your pet, it's name is #{choice.name}"
 end
 
 
@@ -93,4 +106,3 @@ run_app
 
 
 #  puts "Congratulations!!!! Here's is your #{adopted.name}, his has a #{adopted.temperament} and is #{adopted.age} days old"
->>>>>>> 1773b701d53d8a971cd88d2181e29856018492e0

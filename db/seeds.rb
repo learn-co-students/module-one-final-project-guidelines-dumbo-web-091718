@@ -32,13 +32,13 @@ miss_kitty = Pet.create({name: "Miss Kitty", kind: "cat", temperament: "shy", ag
 
 # dogs
 
-max = Pet.create({name: "Max", kind: "Dog", temperament: "Calm", age: 1})
-charlie= Pet.create({name: "Charlie", kind: "Dog", temperament: "Friendly", age: 2})
-cooper = Pet.create({name: "Cooper", kind: "Dog", temperament: "Calm", age: 3})
-buddy  = Pet.create({name: "Buddy", kind: "Dog", temperament: "Shy", age: 4})
-jack   = Pet.create({name: "Jack", kind: "Dog", temperament: "Shy", age: 5})
-rocky  = Pet.create({name: "Rocky", kind: "Dog", temperament: "Calm", age: 6})
-oliver = Pet.create({name: "Oliver", kind: "Dog", temperament: "Calm", age: 3})
-bear   = Pet.create({name: "Bear", kind: "Dog", temperament: "Friendly", age: 4})
-duke   = Pet.create({name: "Duck", kind: "Dog", temperament: "Friendly", age: 2})
-tucker = Pet.create({name: "Tucker", kind: "Dog", temperament: "Shy", age: 1})
+max = Pet.create({name: "Max", kind: "Dog", temperament: "calm", age: 1})
+charlie= Pet.create({name: "Charlie", kind: "dog", temperament: "friendly", age: 2})
+cooper = Pet.create({name: "Cooper", kind: "dog", temperament: "calm", age: 3})
+buddy  = Pet.create({name: "Buddy", kind: "dog", temperament: "shy", age: 4})
+jack   = Pet.create({name: "Jack", kind: "dog", temperament: "shy", age: 5})
+rocky  = Pet.create({name: "Rocky", kind: "dog", temperament: "calm", age: 6})
+oliver = Pet.create({name: "Oliver", kind: "dog", temperament: "calm", age: 3})
+bear   = Pet.create({name: "Bear", kind: "dog", temperament: "friendly", age: 4})
+duke   = Pet.create({name: "Duck", kind: "dog", temperament: "friendly", age: 2})
+tucker = Pet.create({name: "Tucker", kind: "dog", temperament: "shy", age: 1})
