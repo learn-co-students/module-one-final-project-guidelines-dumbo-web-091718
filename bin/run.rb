@@ -40,21 +40,28 @@ def create_user
   ssn = gets.chomp.to_i
   income  = rand(ssn)
   #randomize income range "based on SS"
+  puts "We did a Background-Check and your income is: $#{income}/month."
+  new_user = User.create({name: name, city: city, income:income }) #Create User
 
-  new_user = User.create({name: name, city: city, income:income })#Create User
+  def approve_user(new_user)  # Approve User
+    # min = 2
+      if new_user.income >= 200000000
+        puts "Congrats!! your application is APPROVED!!! Yay!!"
+        true
+      else
+        puts "Sorry. Application DENIED!"
+        false
+      end
 
-end
-
-def approve_user  # Approve User
-  min = 100 
-  User.all.select do |user|
-    if user.income >= min
-      puts "Approved #{user.name}"
-    else
-      puts "DENIED! #{user.name}"
-    end
+      # new_user.status =
   end
+   approve_user(new_user)
 end
+
+# application status to User
+# so that when Approved status: "...." on user profile
+
+
   # d) if income > 200 checks to see if they're nice or not
       #if income matches and they are nice go to Pet Application
       #elsif income matches but they are mean puts "Your income is fine but you've got a bit of an attitude! Come back when you're a little nicer."
@@ -92,18 +99,22 @@ end
 def run_app
   welcome_response = welcome_screen
   if welcome_response != "1"
-    create_user
+    # first the create_user method will run
+    # the return value of the create_user method will either be true or false
+    # true means the user was approved and false means they were rejected
+    # the user will exit the app (via the return keyword) if they were rejected
+     return if !create_user
   else
     print_pets
     # second_chance calling it here causes it to show up twice
+    if second_chance == "1"
+      return if !create_user
+    else
+      puts "Ok... cool. Have a nice day!"
+      return
+    end
   end
-
-  if second_chance == "1"
-    create_user
-    approve_user
-  else
-    puts "Ok... cool. Have a nice day!"
-  end
+  puts "I'm still here"
 
 end
 
