@@ -1,72 +1,80 @@
+
 class Greeter
+  pastel = Pastel.new
+  
   @@current_user = nil
+  
+  def self.prompt 
+    prompt = TTY::Prompt.new 
+  end
+
+  def self.font 
+    font = TTY::Font.new(:standard)
+  end
 
   def self.current_user
     @@current_user
   end
-
+  
   def self.greet
-    system "clear"
-    puts "Welcome to THE WALL"
+    # system "clear"
+    puts "Welcome to the WALL"
+    # puts "Welcome to the".center(80)
+    # puts font.write("MESSAGE BOARD")
+    # puts "MESSAGE BORD"
+    # puts font 
   end
   # ^ necessary?
-
-  def self.login_or_signup
-    system "clear"
-    puts "Press (1) to Login"
-    puts "Press (2) to Signup"
-
-    choice = gets.chomp.to_i
-    while choice != 1 && choice != 2
-      system "clear"
-      puts "That's not what I asked. Try again"
-    end
-
-    if choice == 1
-      self.login
-    elsif choice == 2
-      self.signup
-    end
-  end
-
+  
+  # def self.login_or_signup
+  #   # system "clear"
+  #   puts "Press (1) to Login"
+  #   puts "Press (2) to Signup"
+    
+  #   choice = gets.chomp.to_i
+  #   while choice != 1 && choice != 2
+  #     system "clear"
+  #     puts "That's not what I asked. Try again"
+  #   end
+    
+  #   if choice == 1
+  #     self.login
+  #   elsif choice == 2
+  #     self.signup
+  #   end
+  # end
+  
   def self.login
-
     system "clear"
-    puts "Username?"
-    username = gets.chomp
-    puts "Password"
-    password = gets.chomp
-
+    username = prompt.ask('What is your username?', required: true)
+    password = prompt.mask('What is your password?')
+    
     ######## NEED REFACTOR #########
     while !User.exists?(:name => "#{username}")
       system "clear"
-      puts "wrong username.  try again"
+      puts "Wrong username. Try again."
       username = gets.chomp
     end
 
     while User.find_by(name: username).password != password
       system "clear"
-      puts "Password was incorrect"
-      password = gets.chomp
+      password = prompt.mask('Wrong password. Try again.')
     end
 
     @@current_user = User.find_by(name: username)
     system "clear"
-    puts "Password was correct"
     WallGuide.choose_wall
   end
 
   def self.signup
-      puts "What would you like me to call you?"
-      username = gets.chomp
+      username = prompt.ask('Enter a username: ', required: true)
       while User.exists?(:name => "#{username}")
-        puts "Username already exists, give me another username"
+        puts "This username already exists. Try again."
         username = gets.chomp
       end
-      puts "Give me your password"
-      password = gets.chomp
 
-      # creates user acc, their wall, and permission to their wall
+      password = prompt.mask('Enter a password: ')
+
       @@current_user = User.create(name: username, password: password)
       wall_id = Wall.create(name: @@current_user.name).id
       Permission.create do |u|
