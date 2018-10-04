@@ -1,9 +1,9 @@
 class WallGuide
 
-  @@current_wall = 0
+  @@curr_wall_num = 0
 
-  def self.current_wall= (num)
-    @@current_wall= num
+  def self.curr_wall_num= (num)
+    @@curr_wall_num = num
   end
 
   def self.choose_wall
@@ -12,21 +12,20 @@ class WallGuide
       puts "#{wall.id}: #{wall.name}"
     end
     puts "Which Wall# do you want to visit?"
-    @@current_wall = gets.chomp
+    @@curr_wall_num = gets.chomp
     while 0 == 0
-      binding.pry
-      if has_permission?(Greeter.current_user, @@current_wall)
+      if 1 == 1
         WallGuide.read
       else
-        puts "403: You don't have permission to access that"
+        puts "403: You don't have permission to access that."
         puts "Choose another wall"
-        @@current_wall = gets.chomp
+        @@curr_wall_num = gets.chomp
       end
     end
   end
 
-  def self.has_permission?(user, wall)
-    Permission.exists?(:user_id => user.id) && Permission.exists?(:wall_id => @@current_wall)
+  def self.has_permission?(user, wall_num)
+    Permission.find_by(:user_id => user.id).wall_id == wall_num
   end
 
   def self.options
@@ -42,7 +41,7 @@ class WallGuide
     elsif response == 2
       WallGuide.post
     elsif response == 3
-      WallGuide.new_wall  # => need to build
+      WallGuide.new_wall
     elsif response == 4
       WallGuide.my_posts  # => need to build
     elsif response == 5
@@ -51,7 +50,7 @@ class WallGuide
   end
 
   def self.read
-    all_msg_on_wall = Message.where(wall_id: @@current_wall).order(created_at: :desc)
+    all_msg_on_wall = Message.where(wall_id: @@curr_wall_num).order(created_at: :desc)
     all_msg_on_wall.each do |msg|
       puts ""
       puts "Date: #{msg.created_at}"
@@ -69,10 +68,26 @@ class WallGuide
     Message.create do |msg|
       msg.content = content
       msg.user_id = Greeter.current_user.id
-      msg.wall_id = @@current_wall
+      msg.wall_id = @@curr_wall_num
     end
 
     self.options
+  end
+
+  def self.new_wall
+    puts "NAME OF NEW WALL PLEASE"
+    new_wall_name = gets.chomp
+    @@curr_wall_num = Wall.create(name: new_wall_name).id
+    WallGuide.options
+  end
+
+  def self.my_posts
+    Message.where(:user_id => Greeter.current_user.id).each do |msg|
+      puts "Wall: #{Wall.find_by(:id => msg.wall_id).name}"
+      puts "Date: #{msg.created_at}"
+      puts "#{msg.content}"
+    WallGuide.options # => other options?
+    end
   end
 
 end
