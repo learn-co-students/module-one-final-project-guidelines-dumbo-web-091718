@@ -5,7 +5,7 @@ prompt = TTY::Prompt.new
 font = TTY::Font.new(:standard)
 pastel = Pastel.new
 
-
+system "clear"
 puts "Hello. Welcome to the Message Board!".center(80)
 choice = prompt.select("What would you like to do?") do |menu|
   menu.choice 'Login', 1
