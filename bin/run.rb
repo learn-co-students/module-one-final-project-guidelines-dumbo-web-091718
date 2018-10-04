@@ -36,7 +36,7 @@ def welcome
   clear_screen
   clear_screen
   clear_screen
-  # print_title
+  print_title
   puts "Welcome to the Battle of the Bands!"
   sleep(3)
   clear_screen
@@ -118,6 +118,10 @@ end
 
 def create_band
   band_name = @prompt.ask("What is the name of your band?")
+  if band_name == " " || or band_name.is_empty?
+    puts "That is not a valid band name. Please enter a new name."
+    sleep(2)
+    create_band
   @band_1 = @user_1.bands.create(name: band_name)
   edit_stats
 end
@@ -294,11 +298,11 @@ def play_band
 
   band_1_score = (score1 + score3)/4
   band_2_score = (score2 + score4)/4
-
+  binding.pry
   if band_1_score > band_2_score
-    puts "#{@band1} is the winner!"
+    puts "#{@band_1.name} is the winner!"
   elsif band_2_score > band_1_score
-    puts "#{@band2} is the winner!"
+    puts "#{@band_2.name} is the winner!"
   elsif band_1_score == band_2_score
     puts "It's a tie!"
   end
