@@ -73,7 +73,7 @@ def create_user
     puts "Based on your preferences we think #{the_pet.name} would be perfect for you! Would you like to meet you pet?"
 
     puts "#{the_pet.name} really seems to like you! Do you want to adopt them?"
-        # 
+        #
         # if pet.age > user_pet_age
         #    Pet.all.find do |pet|
         #      pet
@@ -124,8 +124,12 @@ def run_app
 
 
   end
+<<<<<<< HEAD
   get_users_pet
   # puts "I'm still here"
+=======
+  puts "I'm still here!!!!"
+>>>>>>> 4b3849d1c1ffe215248d954f149c0e362f86340f
 
 end
 
