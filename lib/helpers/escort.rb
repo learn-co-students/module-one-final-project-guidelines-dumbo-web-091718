@@ -5,7 +5,7 @@ class Escort
 
   # READER AND WRITER METHODS FOR CLASS VAR. #
 
-  def self.prompt 
+  def self.prompt
     TTY::Prompt.new
   end
 
@@ -19,7 +19,7 @@ class Escort
     @@current_wall_num
   end
   def self.current_wall_num= (num)
-    @@current_wall_num = num
+    @@current_wall_num = num.to_i
   end
 
   def self.options
@@ -32,23 +32,23 @@ class Escort
     choice = prompt.select("What would you like to do?") do |menu|
       menu.choice 'Choose a Wall', 1
       menu.choice 'Post on This Wall', 2
-      menu.choice 'Create a New Wall', 3 
+      menu.choice 'Create a New Wall', 3
       menu.choice 'View all Posts', 4
-      menu.choice 'Quit', 5 
+      menu.choice 'Quit', 5
     end
 
     # choice = gets.chomp.to_i
     case choice
     when 1
-      WallGuide.choose_wall 
+      WallGuide.choose_wall
     when 2
-      WallGuide.post 
+      WallGuide.post
     when 3
-      WallGuide.new_wall 
+      WallGuide.new_wall
     when 4
-      WallGuide.my_posts 
+      WallGuide.my_posts
     when 5
-      exit 
+      exit
     end
   end
 
