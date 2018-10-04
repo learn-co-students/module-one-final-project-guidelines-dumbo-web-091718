@@ -61,7 +61,9 @@ end
 
 def create_account
   @name = @prompt.ask("What is your name?")
-  if !User.all.find_by(name: @name).nil? && User.all.find_by(name: @name).name == @name
+  find_user = User.all.find_by(name: @name)
+  if !find_user.nil? && find_user.name == @name
+  # if !User.all.find_by(name: @name).nil? && User.all.find_by(name: @name).name == @name
     choice = @prompt.select("Account already exists. What would you like to do?", ["Login", "Delete Account", "Try Again", "Exit"])
     case choice
     when "Login"
@@ -87,8 +89,10 @@ def delete_user
 end
 
 def refresh_user
-  @user_1 = User.find_by(name: @name)
+  # @name.titleize
+  @user_1 = User.find_by(name: @name.titleize)
 end
+
 
 def log_in
   @name = @prompt.ask("What is the name on the existing account?")
@@ -117,6 +121,7 @@ def band_menu
 end
 
 def create_band
+  clear_screen
   band_name = @prompt.ask("What is the name of your band?")
   @band_1 = @user_1.bands.create(name: band_name)
   edit_stats
@@ -131,6 +136,7 @@ def load_bands
     @user_1.bands.map do |band|
       user_bands.unshift(band.name)
     end
+    clear_screen
     choice = @prompt.select("Select a band to load:", user_bands)
     if choice == "Go Back"
       band_menu
@@ -142,14 +148,15 @@ def load_bands
 end
 
 def band_options
-  choice = @prompt.select("What would you like to do with #{@band_1.name}?", ["Play Band", "Rename Band", "Edit Stats", "Delete Band", "Go back"])
+  clear_screen
+  choice = @prompt.select("What would you like to do with #{@band_1.name}?", ["Play Band", "Rename Band", "Stats", "Delete Band", "Go back"])
   case choice
   when "Play Band"
     play_band
   when "Rename Band"
     rename_band
-  when "Edit Stats"
-    edit_stats
+  when "Stats"
+    view_stats
   when "Delete Band"
     delete_band
   when "Go back"
@@ -158,15 +165,58 @@ def band_options
 end
 
 def rename_band
+  clear_screen
   new_name = @prompt.ask("What would you like to change #{@band_1.name}'s name to?")
   @band_1.name = new_name
   @band_1.save
   band_options
 end
 
-def edit_stats
-  choice = @prompt.select("Please select one of the following:", ["Genre", "Band Stats"])
+def view_stats
+  clear_screen
+  stats = {
+    "Presentation" => @band_1.presentation,
+    "Stage Presence" => @band_1.stage_presence,
+    "Lyrics" => @band_1.lyrics,
+    "Technical Ability" => @band_1.tech_ability
+  }
+
+  stats.sort_by{|key, value| value}
+
+  new_stats = stats.keys
+
+  puts "These are the stats for your band #{@band_1.name}:"
+  puts ""
+  puts "Genre: #{@band_1.genre}"
+  puts ""
+  puts "First priority: #{new_stats[0]}"
+  puts "Second priority: #{new_stats[1]}"
+  puts "Third priority: #{new_stats[2]}"
+  puts "Last priority: #{new_stats[3]}"
+  puts " "
+
+  choice = @prompt.select("Would you like to edit the above or go back?", ["Edit", "Go Back"])
+
+  puts " "
+
   case choice
+  when "Edit"
+    edit_stats
+  when "Go Back"
+    band_options
+  end
+end
+
+def stats_menu
+end
+
+
+def edit_stats
+  clear_screen
+  choice = @prompt.select("Please select one of the following:", ["Genre", "Band Stats", "Go Back"])
+  case choice
+  when "Go Back"
+    view_stats
   when "Genre"
     @genre = @prompt.select("What is the genre of your band?", ["Rock", "Pop", "Rap", "Country"])
     @band_1.update(genre: @genre)
@@ -204,6 +254,7 @@ def edit_stats
 end
 
 def delete_band
+  clear_screen
   @band_1.destroy
   puts "#{@band_1.name} has been deleted."
   sleep(3)
@@ -252,13 +303,77 @@ end
 # end
 
 def create_user_2
+  # creates of band instances - make it equal to a variable and randomly Select
+  # create table of previously entered bands and randomly select user_id
   @user_2 = User.create(name: "User")
   @band_2 = @user_2.bands.create(name: "Metallica", genre: "Rock", tech_ability: 2, presentation: 1, stage_presence: 3, lyrics: 4)
 end
 
+# def judge_results
+#   x = 0
+#
+#   simon_responses = {
+#     :good => {
+#       clip: pid = fork{ exec 'afplay', "/Users/hanaa/Desktop/Project/Absolutely Dreadful.mp3"},
+#       text: "That was absolutely dreadful"
+#     },
+#   }
+  #   :ok => {
+  #     :clip
+  #     :text
+  #   }
+  #   :bad => {
+  #     :clip
+  #     :text
+  #   }
+  # }
+  #
+  # simon_grade = @simon.grade(@band_1)
+  #
+  # x += simon_grade
+  #
+  # paula_responses = {
+  #   :good => {
+  #     :clip
+  #     :text
+  #   }
+  #   :ok => {
+  #     :clip
+  #     :text
+  #   }
+  #   :bad => {
+  #     :clip
+  #     :text
+  #   }
+  # }
+  #
+  # x += @paula.grade(@band_1)
+  #
+  # randy_responses = {
+  #   :good => {
+  #     :clip
+  #     :text
+  #   }
+  #   :ok => {
+  #     :clip
+  #     :text
+  #   }
+  #   :bad => {
+  #     :clip
+  #     :text
+  #   }
+  # }
+#   x += @randy.grade(@band_1)
+#
+#   simon_responses[:good][:clip]
+#
+# end
+
 def judge_scores
   x = 0
   y = 0
+
+  #iterate through Band.all to apply .grade method
   x += @simon.grade(@band_1)
   x += @paula.grade(@band_1)
   x += @randy.grade(@band_1)
@@ -284,9 +399,13 @@ def audience_scores
   return x, y
 end
 
+# run method right before play_band to make sure all columns have their proper input
+
+
 def play_band
+
   create_judges
-  # create_audience
+  # # create_audience
   create_user_2
   #binding.pry
   score3, score4 = judge_scores
@@ -295,10 +414,14 @@ def play_band
   band_1_score = (score1 + score3)/4
   band_2_score = (score2 + score4)/4
 
+# judge_results
+
+clear_screen
+
   if band_1_score > band_2_score
-    puts "#{@band1} is the winner!"
+    puts "#{@band_1.name} is the winner!"
   elsif band_2_score > band_1_score
-    puts "#{@band2} is the winner!"
+    puts "#{@band_2.name} is the winner!"
   elsif band_1_score == band_2_score
     puts "It's a tie!"
   end
