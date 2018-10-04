@@ -45,18 +45,21 @@ class Greeter
     ######## NEED REFACTOR #########
     while !User.exists?(:name => "#{username}")
       system "clear"
-      puts "Wrong username. Try again."
+      puts "User doesn't exist. Try again."
       username = gets.chomp
     end
 
-    while User.find_by(name: username).password != password
-      system "clear"
-      password = prompt.mask('Wrong password. Try again.')
+    4.times do
+      if User.find_by(name: username).password != password
+        system "clear"
+        password = prompt.mask('Wrong password. Try again.')
+      else
+        Escort.current_user = User.find_by(name: username)
+        system "clear"
+        WallGuide.choose_wall
+      end
     end
 
-    Escort.current_user = User.find_by(name: username)
-    system "clear"
-    WallGuide.choose_wall
   end
 
   def self.signup
@@ -77,4 +80,6 @@ class Greeter
 
       WallGuide.choose_wall
   end
+
+
 end
