@@ -1,3 +1,6 @@
+
+
+
 # t.string :name
 # t.string :kind
 # t.string :temperament
