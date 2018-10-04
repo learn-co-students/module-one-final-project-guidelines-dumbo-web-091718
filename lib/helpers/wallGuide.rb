@@ -8,7 +8,6 @@ class WallGuide
   end
 
   def self.has_permission?(user, wall_num)
-    binding.pry
     Permission.find_by(:user_id => user.id).wall_id == wall_num
   end
 
