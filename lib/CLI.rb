@@ -40,6 +40,7 @@ def welcome
   clear_screen
   clear_screen
   clear_screen
+  pid = fork{exec 'afplay', '/Users/donovandwyer/Development/code/module-one-final-project-guidelines-dumbo-web-091718/lib/washedout.mp3'}
   print_title
   puts "Welcome to the Battle of the Bands!"
   @prompt.keypress("Press any key to continue")
@@ -291,13 +292,6 @@ def delete_band
   load_bands
 end
 
-def create_judges
-  @simon = Judge.create(name: "Simon Cowell", preferred_att1: "tech_ability", preferred_att2: "presentation")
-  @paula = Judge.create(name: "Paula Abdul", preferred_att1: "stage_presence", preferred_att2: ["tech_ability", "presentation", "lyrics"].sample)
-  @randy = Judge.create(name: "Randy Jackson", preferred_att1: "lyrics", preferred_att2: "presentation")
-end
-
-
 
 def create_user_2
   @user_2 = User.find_by(name: "CPU")
@@ -331,9 +325,9 @@ def battle_sequence
   sleep(2)
   puts "#{@user_1.name}'s band #{@band_1.name}"
   sleep(2)
-  puts "...VERSUS..."
+  puts "\r...VERSUS..."
   sleep(2)
-  puts "#{@user_2.name}'s band #{@band_2.name}"
+  puts "\r#{@user_2.name}'s band #{@band_2.name}"
   sleep(3)
   puts "The battle begins..."
   sleep(3)
