@@ -25,7 +25,7 @@ class WallGuide
       end
     end
   end
-  
+
 
   def self.read
     all_msg_on_wall = Message.where(wall_id: Escort.current_wall_num).order(created_at: :desc)
