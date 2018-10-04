@@ -13,19 +13,39 @@ class WallGuide
     end
     puts "Which Wall# do you want to visit?"
     @@current_wall = gets.chomp
-    WallGuide.read
+    while 0 == 0
+      binding.pry
+      if has_permission?(Greeter.current_user, @@current_wall)
+        WallGuide.read
+      else
+        puts "403: You don't have permission to access that"
+        puts "Choose another wall"
+        @@current_wall = gets.chomp
+      end
+    end
   end
 
-  def self.three_op
+  def self.has_permission?(user, wall)
+    Permission.exists?(:user_id => user.id) && Permission.exists?(:wall_id => @@current_wall)
+  end
+
+  def self.options
     puts "To read another wall, press (1)"
     puts "To post on this wall, press (2)"
-    puts "To quit, press (3)"
+    puts "To create a new wall, press (3)"
+    puts "To view all posts, press (4)"
+    puts "To quit, press (5)"
+
     response = gets.chomp.to_i
     if response == 1
       WallGuide.choose_wall
     elsif response == 2
       WallGuide.post
     elsif response == 3
+      WallGuide.new_wall  # => need to build
+    elsif response == 4
+      WallGuide.my_posts  # => need to build
+    elsif response == 5
       exit
     end
   end
@@ -39,7 +59,7 @@ class WallGuide
       puts "#{msg.content}"
       puts "------------------------------------------"
     end
-    WallGuide.three_op
+    WallGuide.options
   end
 
   def self.post
@@ -52,7 +72,7 @@ class WallGuide
       msg.wall_id = @@current_wall
     end
 
-    self.three_op
+    self.options
   end
 
 end
