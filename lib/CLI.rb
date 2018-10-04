@@ -30,11 +30,12 @@ def print_title
 HEREDOC
 
 pastel = Pastel.new
-puts pastel.red(title)
+puts pastel.green(title)
 end
 
 def welcome
   @prompt = TTY::Prompt.new
+  @spinner = TTY::Spinner.new("[:spinner]Loading ...", format: :flip)
   clear_screen
   clear_screen
   clear_screen
@@ -78,6 +79,7 @@ def create_account
     end
   else
     @user_1 = User.create(name: @name)
+    loading
     create_band
   end
 end
@@ -110,6 +112,12 @@ def log_in
   end
 end
 
+def loading
+  @spinner.auto_spin
+  sleep(4)
+  @spinner.stop
+end
+
 def band_menu
   clear_screen
   print_title
@@ -118,6 +126,7 @@ def band_menu
   if choice == "Create New Band"
     create_band
   elsif choice == "Load Bands"
+    loading
     load_bands
   elsif choice == "Go Back"
     main_menu
@@ -165,6 +174,7 @@ def band_options
   choice = @prompt.select("What would you like to do with #{@band_1.name}?", ["Play Band", "Rename Band", "Edit Stats", "Delete Band", "Go back"])
   case choice
   when "Play Band"
+    loading
     play_band
   when "Rename Band"
     rename_band
@@ -178,6 +188,8 @@ def band_options
 end
 
 def rename_band
+  clear_screen
+  print_title
   new_name = @prompt.ask("What would you like to change #{@band_1.name}'s name to?")
   @band_1.name = new_name
   @band_1.save
@@ -203,6 +215,7 @@ def select_genre
   elsif choice == "Reselect Genre"
     select_genre
   else
+    loading
     play_band
   end
 end
@@ -244,6 +257,7 @@ def select_stats
   elsif choice == "Reselect Stats"
     select_stats
   else
+    loading
     play_band
   end
 end
