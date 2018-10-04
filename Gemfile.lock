@@ -48,6 +48,7 @@ GEM
     tty (0.1.0)
     tty-color (0.4.3)
     tty-cursor (0.6.0)
+    tty-font (0.2.0)
     tty-prompt (0.17.0)
       necromancer (~> 0.4.0)
       pastel (~> 0.7.0)
@@ -72,6 +73,7 @@ DEPENDENCIES
   sinatra-activerecord
   sqlite3
   tty
+  tty-font
   tty-prompt
 
 BUNDLED WITH
