@@ -83,7 +83,9 @@ class WallGuide
     puts "NAME OF NEW WALL PLEASE"
     new_wall_name = gets.chomp
     Escort.current_wall_num = Wall.create(name: new_wall_name).id
-    Escort.options
+    Permission.create(user_id: Escort.current_user, wall_id: Escort.current_wall_num)
+    Userwall.create(user_id: Escort.current_user, wall_id: Escort.current_wall_num)
+    WallGuide.read
   end
 
   def self.my_posts
