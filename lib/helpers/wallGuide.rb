@@ -17,7 +17,7 @@ class WallGuide
     Escort.current_wall_num = gets.chomp
     while true
       if WallGuide.has_permission?(Escort.current_user, Escort.current_wall_num)
-        Escort.options
+        WallGuide.read
       else
         puts "403: You don't have permission to access that."
         puts "Choose another wall"
@@ -55,7 +55,9 @@ class WallGuide
     puts "NAME OF NEW WALL PLEASE"
     new_wall_name = gets.chomp
     Escort.current_wall_num = Wall.create(name: new_wall_name).id
-    Escort.options
+    Permission.create(user_id: Escort.current_user, wall_id: Escort.current_wall_num)
+    Userwall.create(user_id: Escort.current_user, wall_id: Escort.current_wall_num)
+    WallGuide.read
   end
 
   def self.my_posts
