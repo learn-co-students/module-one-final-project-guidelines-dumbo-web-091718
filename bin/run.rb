@@ -1,18 +1,18 @@
 require_relative '../config/environment'
 
    def welcome_screen
-  puts "Hey, welcome to Fuzzy Friends. Just looking or wanting to adopt?"
-  puts "1. Just looking!"
-      # => shows list of pets or pictures maybe??
-      # number_1 = gets.chomp
-  puts "2. I wanna pet!"
-      user_choice = gets.chomp
-      # if user_choice == "1"
-      #   print_pets
-      # else user_choice == "2"
-      #   return
-      #   # => goes to user APPLICATION
-      # end
+    puts "Hey, welcome to Fuzzy Friends. Just looking or wanting to adopt?"
+    puts "1. Just looking!"
+        # => shows list of pets or pictures maybe??
+        # number_1 = gets.chomp
+    puts "2. I wanna pet!"
+        user_choice = gets.chomp
+        # if user_choice == "1"
+        #   print_pets
+        # else user_choice == "2"
+        #   return
+        #   # => goes to user APPLICATION
+        # end
   end
   def second_chance
     puts "====================="
@@ -43,59 +43,67 @@ def create_user
   puts "We did a Background-Check and your income is: $#{income}/month."
   new_user = User.create({name: name, city: city, income:income }) #Create User
 
-  def approve_user(new_user)  # Approve User
-    # min = 2
-      if new_user.income >= 200000000
-        puts "Congrats!! your application is APPROVED!!! Yay!!"
-        true
-      else
-        puts "Sorry. Application DENIED!"
-        false
-      end
+    def approve_user(new_user)  # Approve User
+      # min = 2
+        if new_user.income >= 100
+          puts "Congrats!! your application is APPROVED!!! Yay!!"
+          true
+        else
+          puts "Sorry. Application DENIED!"
+          false
+        end
 
-      # new_user.status =
+        # new_user.status =
+    end
+     approve_user(new_user)
   end
-   approve_user(new_user)
-end
-
-# application status to User
-# so that when Approved status: "...." on user profile
 
 
-  # d) if income > 200 checks to see if they're nice or not
-      #if income matches and they are nice go to Pet Application
-      #elsif income matches but they are mean puts "Your income is fine but you've got a bit of an attitude! Come back when you're a little nicer."
-      #else income < 200 return "Unfortunately your monthly income is #{random_number}, which is much too low to adopt a pet. Please come back again!"
-     ##### PET APPLICATION! #####
-  # get the pet based on user preference
-def get_users_pet
-  puts "What kind of pet would you want"
-  user_pet_kind = gets.chomp
-  puts "What kind of temperament would you want your pet to have?"
-  user_pet_temper = gets.chomp
-    the_pet = Pet.all.find do |pet|
-          pet.kind == user_pet_kind && pet.temperament == user_pet_temper
-          end
-  # puts "Here is your pet, it's name is #{the_pet.name}"
-  puts "What's the ideal age of your pet?"
+  def get_users_pet
+    puts "What kind of pet would you want"
+    user_pet_kind = gets.chomp.downcase
+    puts "What kind of temperament would you want your pet to have?"
+    user_pet_temper = gets.chomp.downcase
+    puts "What is the prefered age"
+    user_pet_age = gets.chomp.to_i
+
+      the_pet = Pet.all.find do |pet|
+            pet.kind == user_pet_kind && pet.temperament == user_pet_temper && pet.age == user_pet_age
+            end
+    puts "Based on your preferences we think #{the_pet.name} would be perfect for you! Would you like to meet you pet?"
+
+    puts "#{the_pet.name} really seems to like you! Do you want to adopt them?"
+        # 
+        # if pet.age > user_pet_age
+        #    Pet.all.find do |pet|
+        #      pet
+        #    end
+        # end
+
+  end
+
+  #***************************
   # enter number (ex. 4)
   #if/else statement number > 5 return that pet that matches
   #elsif return pet that is > 10 return that pet that matches
   #etc.
-  puts "Based on your preferences we think #{pet.name} would be perfect for you! Would you like to meet you pet?"
-  #puts "1. 'Gosh, so excited. Yes!'"
-  #puts "2. 'Meh, I guess."
-  #puts "3. 'No, pets are gross.'"
-  # if 1 || 2 => shows picture of pet
-  # if 3 => puts "Uh. ok. See ya later!""
-  puts "#{pet.name} really seems to like you! Do you want to adopt them?"
-  #puts "1. 'YES!'"
-  #puts "2. 'They're kind of ugly. No.'"
-  #if 1 puts "Yay!"
-  #puts something exciting like a congrats thing
-  #if 2 puts "Sad... ok. well bye."
-  #exits program
-end
+  # puts "Based on your preferences we think #{pet.name} would be perfect for you! Would you like to meet you pet?"
+  # #puts "1. 'Gosh, so excited. Yes!'"
+  # #puts "2. 'Meh, I guess."
+  # #puts "3. 'No, pets are gross.'"
+  # # if 1 || 2 => shows picture of pet
+  # # if 3 => puts "Uh. ok. See ya later!""
+  # puts "#{pet.name} really seems to like you! Do you want to adopt them?"
+  # #puts "1. 'YES!'"
+  # #puts "2. 'They're kind of ugly. No.'"
+  # #if 1 puts "Yay!"
+  # #puts something exciting like a congrats thing
+  # #if 2 puts "Sad... ok. well bye."
+  # #exits program
+  # #****************************
+
+
+
 def run_app
   welcome_response = welcome_screen
   if welcome_response != "1"
@@ -113,8 +121,11 @@ def run_app
       puts "Ok... cool. Have a nice day!"
       return
     end
+
+
   end
-  puts "I'm still here"
+  get_users_pet
+  # puts "I'm still here"
 
 end
 
