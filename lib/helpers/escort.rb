@@ -33,12 +33,16 @@ class Escort
 
     case choice
     when 1
+      system "clear"
       WallGuide.choose_wall
     when 2
+      system "clear"
       WallGuide.post
     when 3
+      system "clear"
       WallGuide.new_wall
     when 4
+      system "clear"
       WallGuide.my_posts
     when 5
       exit

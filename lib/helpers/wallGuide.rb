@@ -16,28 +16,18 @@ class WallGuide
   end
 
   def self.choose_wall
-    # prompt.select("Which wall do you want to visit?") do |menu|
-    #   menu.default 3
-    
-    #   menu.choice 'Scorpion', 1
-    #   menu.choice 'Kano', 2
-    #   menu.choice 'Jax', 3
-    # end
     walls = Wall.all.map { |wall| wall }
     wall_names = walls.map { |wall| wall.name }
     wall_name = prompt.select('Which wall do you want to visit?', wall_names)
-    # WallGuide.display_walls
-    # puts "Which Wall # do you want to visit?"
     found_wall = Wall.find_by(name: wall_name).id
     Escort.current_wall_num = found_wall 
-    # binding.pry
     if WallGuide.has_permission?(Escort.current_user, Escort.current_wall_num)
       Escort.options
     else
+      puts "You don't have permission to view that wall."
+      # system "clear"
       self.choose_wall 
-      # puts "403: You don't have permission to access that."
-      # puts "Choose another wall"
-      # Escort.current_wall_num = gets.chomp
+      system "clear"
     end
   end
 
@@ -88,13 +78,31 @@ class WallGuide
     WallGuide.read
   end
 
-  def self.my_posts
-    Message.where(:user_id => Escort.current_user.id).each do |msg|
-      binding.pry
-      puts "Wall: #{Wall.find_by(:id => msg.wall_id).name}"
-      puts "Date: #{msg.created_at}"
-      puts "#{msg.content}"
+  # def self.my_posts
+  #   Message.where(:user_id => Escort.current_user.id).each do |msg|
+  #     binding.pry
+  #     puts "Wall: #{Wall.find_by(:id => msg.wall_id).name}"
+  #     puts "Date: #{msg.created_at}"
+  #     puts "#{msg.content}"
+  #   end
+  #   Escort.options
+  # end
+
+  def self.my_posts 
+    if Message.all.size == 0
+      puts "There are no messages to view."
+      Escort.options
     end
+
+    messages = Message.where(:user_id => Escort.current_user.id).map(&:content)
+
+    truncated_msgs = messages.map { |msg| msg[0, 20] + " ..." }
+
+    # binding.pry
+    truncated_msg = prompt.select('Which post would you like to view?', messages)
+
+    puts truncated_msg
+
     Escort.options
   end
 end
