@@ -261,47 +261,6 @@ def delete_band
   load_bands
 end
 
-def create_judges
-  @simon = Judge.create(name: "Simon Cowell", preferred_att1: "tech_ability", preferred_att2: "presentation")
-  @paula = Judge.create(name: "Paula Abdul", preferred_att1: "stage_presence", preferred_att2: ["tech_ability", "presentation", "lyrics"].sample)
-  @randy = Judge.create(name: "Randy Jackson", preferred_att1: "lyrics", preferred_att2: "presentation")
-end
-
-
-# def create_audience(band)
-  # genres = {
-  #   pop: {
-  #     preferred_att1: "presentation",
-  #     preferred_att2: "stage_presence"
-  #   },
-  #   rock: {
-  #     preferred_att1: "tech_ability",
-  #     preferred_att2: "stage_presence"
-  #   },
-  #   rap: {
-  #     preferred_att1: "lyrics",
-  #     preferred_att2: "tech_ability"
-  #   },
-  #   country: {
-  #     preferred_att1: "lyrics",
-  #     preferred_att2: "stage_presence"
-  #   }
-  # }
-  # case band.genre
-  # when "Pop"
-  #   stat_hash = genres[:pop]
-  # when "Rap"
-  #   stat_hash = genres[:rap]
-  # when "Rock"
-  #   stat_hash = genres[:rock]
-  # when "Country"
-  #   stat_hash = genres[:country]
-  # end
-  # @audience = Judge.create(name: "Audience")
-  # @audience.update(stat_hash)
-#   # @audience.save
-# end
-
 def create_user_2
   # creates of band instances - make it equal to a variable and randomly Select
   # create table of previously entered bands and randomly select user_id
@@ -309,113 +268,35 @@ def create_user_2
   @band_2 = @user_2.bands.create(name: "Metallica", genre: "Rock", tech_ability: 2, presentation: 1, stage_presence: 3, lyrics: 4)
 end
 
-# def judge_results
-#   x = 0
-#
-#   simon_responses = {
-#     :good => {
-#       clip: pid = fork{ exec 'afplay', "/Users/hanaa/Desktop/Project/Absolutely Dreadful.mp3"},
-#       text: "That was absolutely dreadful"
-#     },
-#   }
-  #   :ok => {
-  #     :clip
-  #     :text
-  #   }
-  #   :bad => {
-  #     :clip
-  #     :text
-  #   }
-  # }
-  #
-  # simon_grade = @simon.grade(@band_1)
-  #
-  # x += simon_grade
-  #
-  # paula_responses = {
-  #   :good => {
-  #     :clip
-  #     :text
-  #   }
-  #   :ok => {
-  #     :clip
-  #     :text
-  #   }
-  #   :bad => {
-  #     :clip
-  #     :text
-  #   }
-  # }
-  #
-  # x += @paula.grade(@band_1)
-  #
-  # randy_responses = {
-  #   :good => {
-  #     :clip
-  #     :text
-  #   }
-  #   :ok => {
-  #     :clip
-  #     :text
-  #   }
-  #   :bad => {
-  #     :clip
-  #     :text
-  #   }
-  # }
-#   x += @randy.grade(@band_1)
-#
-#   simon_responses[:good][:clip]
-#
-# end
 
-def judge_scores
-  x = 0
-  y = 0
-
-  #iterate through Band.all to apply .grade method
-  x += @simon.grade(@band_1)
-  x += @paula.grade(@band_1)
-  x += @randy.grade(@band_1)
-  y += @simon.grade(@band_2)
-  y += @paula.grade(@band_2)
-  y += @randy.grade(@band_2)
-  return x, y
-  # if x > y
-  #   puts "#{@band_1.name} is the winner!"
-  # else
-  #   puts "#{@band_2.name} is the winner!"
-  # end
+def judge_scores(band)
+  judge_scores = {}
   # binding.pry
+  Judge.all.each do |judge|
+    judge_scores[judge.name] = judge.grade(band)
+  end
+  return judge_scores
 end
 
-def audience_scores
-  @audience_1 = @band_1.create_audience
-  @audience_2 = @band_2.create_audience
-
-  x = @audience_1.grade(@band_1)
-  y = @audience_2.grade(@band_2)
-
-  return x, y
+def audience_scores(band)
+  @audience = band.create_audience
+  return @audience.grade(band)
 end
-
-# run method right before play_band to make sure all columns have their proper input
-
-
+#
+# # run method right before play_band to make sure all columns have their proper input
+#
+#
 def play_band
-
-  create_judges
-  # # create_audience
-  create_user_2
-  #binding.pry
-  score3, score4 = judge_scores
-  score1, score2 = audience_scores
-
-  band_1_score = (score1 + score3)/4
-  band_2_score = (score2 + score4)/4
-
-# judge_results
-
+#
+    create_user_2
+#   #binding.pry
+    band_1_score = judge_scores(@band_1).values.sum + audience_scores(@band_1) / 4
+    band_2_score = judge_scores(@band_2).values.sum + audience_scores(@band_2) / 4
+#   band_1_score = (score4)/4
+#   band_2_score = (score3)/4
+#
+# # judge_results
+#
 clear_screen
 
   if band_1_score > band_2_score
@@ -425,8 +306,9 @@ clear_screen
   elsif band_1_score == band_2_score
     puts "It's a tie!"
   end
-end
 
+end
+#
 
 
 

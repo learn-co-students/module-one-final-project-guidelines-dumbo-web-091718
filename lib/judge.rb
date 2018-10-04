@@ -2,6 +2,7 @@ require 'pry'
 
 class Judge < ActiveRecord::Base
   has_many :bands
+  has_many :responses
 
   def grade(band)
     band_hash = {
