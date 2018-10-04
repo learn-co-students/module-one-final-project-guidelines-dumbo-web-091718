@@ -50,8 +50,6 @@ def create_user
       end
 
   end
-   approve_user(new_user)
-end
 
 
 def get_users_pet(user)
@@ -106,9 +104,12 @@ def run_app
       puts "Ok... cool. Have a nice day!"
       return
     end
+
+
   end
 
   get_users_pet(created_user)
+
 
 
 end
