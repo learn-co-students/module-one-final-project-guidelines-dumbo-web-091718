@@ -41,7 +41,7 @@ class WallGuide
     elsif response == 2
       WallGuide.post
     elsif response == 3
-      WallGuide.new_wall  # => need to build
+      WallGuide.new_wall
     elsif response == 4
       WallGuide.my_posts  # => need to build
     elsif response == 5
@@ -74,6 +74,20 @@ class WallGuide
     self.options
   end
 
-  def 
+  def self.new_wall
+    puts "NAME OF NEW WALL PLEASE"
+    new_wall_name = gets.chomp
+    @@curr_wall_num = Wall.create(name: new_wall_name).id
+    WallGuide.options
+  end
+
+  def self.my_posts
+    Message.where(:user_id => Greeter.current_user.id).each do |msg|
+      puts "Wall: #{Wall.find_by(:id => msg.wall_id).name}"
+      puts "Date: #{msg.created_at}"
+      puts "#{msg.content}"
+    WallGuide.options # => other options?
+    end
+  end
 
 end
