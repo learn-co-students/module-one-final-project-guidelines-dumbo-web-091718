@@ -9,6 +9,7 @@ class Greeter
     system "clear"
     puts "Welcome to THE WALL"
   end
+  # ^ necessary?
 
   def self.login_or_signup
     system "clear"
@@ -30,13 +31,13 @@ class Greeter
 
   def self.login
 
-    ######## NEED REFACTOR #########
     system "clear"
     puts "Username?"
     username = gets.chomp
     puts "Password"
     password = gets.chomp
 
+    ######## NEED REFACTOR #########
     while !User.exists?(:name => "#{username}")
       system "clear"
       puts "wrong username.  try again"
@@ -64,7 +65,15 @@ class Greeter
       end
       puts "Give me your password"
       password = gets.chomp
+
+      # creates user acc, their wall, and permission to their wall
       @@current_user = User.create(name: username, password: password)
+      wall_id = Wall.create(name: @@current_user.name).id
+      Permission.create do |u|
+        u.user_id= @@current_user.id
+        u.wall_id= wall_id
+      end
+      
       WallGuide.choose_wall
   end
 end
