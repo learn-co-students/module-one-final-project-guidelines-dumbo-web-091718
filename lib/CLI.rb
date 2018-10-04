@@ -1,4 +1,5 @@
 require_relative '../config/environment'
+require 'progress_bar'
 require 'pry'
 
 def clear_screen
@@ -84,6 +85,15 @@ def create_account
   end
 end
 
+def loading_bar
+  bar = ProgressBar.new(100, :bar, :percentage)
+
+  100.times do
+    sleep 0.1
+    bar.increment!
+  end
+end
+
 def delete_user
   User.all.find_by(name: @name).destroy
   puts "#{@name} has been deleted."
@@ -114,7 +124,7 @@ end
 
 def loading
   @spinner.auto_spin
-  sleep(4)
+  sleep(2)
   @spinner.stop
 end
 
@@ -288,39 +298,6 @@ def create_judges
 end
 
 
-# def create_audience(band)
-  # genres = {
-  #   pop: {
-  #     preferred_att1: "presentation",
-  #     preferred_att2: "stage_presence"
-  #   },
-  #   rock: {
-  #     preferred_att1: "tech_ability",
-  #     preferred_att2: "stage_presence"
-  #   },
-  #   rap: {
-  #     preferred_att1: "lyrics",
-  #     preferred_att2: "tech_ability"
-  #   },
-  #   country: {
-  #     preferred_att1: "lyrics",
-  #     preferred_att2: "stage_presence"
-  #   }
-  # }
-  # case band.genre
-  # when "Pop"
-  #   stat_hash = genres[:pop]
-  # when "Rap"
-  #   stat_hash = genres[:rap]
-  # when "Rock"
-  #   stat_hash = genres[:rock]
-  # when "Country"
-  #   stat_hash = genres[:country]
-  # end
-  # @audience = Judge.create(name: "Audience")
-  # @audience.update(stat_hash)
-#   # @audience.save
-# end
 
 def create_user_2
   @user_2 = User.find_by(name: "CPU")
@@ -337,12 +314,6 @@ def judge_scores
   y += @paula.grade(@band_2)
   y += @randy.grade(@band_2)
   return x, y
-  # if x > y
-  #   puts "#{@band_1.name} is the winner!"
-  # else
-  #   puts "#{@band_2.name} is the winner!"
-  # end
-  # binding.pry
 end
 
 def audience_scores
@@ -355,11 +326,30 @@ def audience_scores
   return x, y
 end
 
+def battle_sequence
+  clear_screen
+  sleep(2)
+  puts "#{@user_1.name}'s band #{@band_1.name}"
+  sleep(2)
+  puts "...VERSUS..."
+  sleep(2)
+  puts "#{@user_2.name}'s band #{@band_2.name}"
+  sleep(3)
+  puts "The battle begins..."
+  sleep(3)
+  puts "NOW!"
+  sleep(2)
+  clear_screen
+  puts "BATTLE IN PROGRESS"
+  loading_bar
+end
+
 def play_band
   create_judges
-  # create_audience
   create_user_2
-  #binding.pry
+
+  battle_sequence
+
   score3, score4 = judge_scores
   score1, score2 = audience_scores
 
