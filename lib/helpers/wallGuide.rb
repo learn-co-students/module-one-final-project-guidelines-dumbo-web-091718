@@ -6,6 +6,10 @@ class WallGuide
     @@curr_wall_num = num
   end
 
+  def self.prompt 
+    prompt = TTY::Prompt.new 
+  end
+
   def self.choose_wall
     puts "All Walls:"
     Wall.all.each do |wall|
@@ -29,25 +33,28 @@ class WallGuide
   end
 
   def self.options
-    puts "To read another wall, press (1)"
-    puts "To post on this wall, press (2)"
-    puts "To create a new wall, press (3)"
-    puts "To view all posts, press (4)"
-    puts "To quit, press (5)"
-
-    response = gets.chomp.to_i
-    if response == 1
-      WallGuide.choose_wall
-    elsif response == 2
-      WallGuide.post
-    elsif response == 3
-      WallGuide.new_wall
-    elsif response == 4
-      WallGuide.my_posts  # => need to build
-    elsif response == 5
-      exit
+    response = prompt.select("What do you want to do?") do |menu|
+      menu.choice 'Read Another Wall', 1
+      menu.choice 'Post on This Wall', 2
+      menu.choice 'Create a New Wall', 3
+      menu.choice 'View All Posts', 4
+      menu.choice 'Quit', 5
     end
+
+    case response 
+      when 1 
+        WallGuide.choose_wall 
+      when 2 
+        WallGuide.post 
+      when 3 
+        WallGuide.new_wall 
+      when 4 
+        WallGuide.my_posts 
+      when 5 
+        exit  
+      end
   end
+  
 
   def self.read
     all_msg_on_wall = Message.where(wall_id: @@curr_wall_num).order(created_at: :desc)
