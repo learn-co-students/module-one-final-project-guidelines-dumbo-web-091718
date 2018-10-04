@@ -90,7 +90,7 @@ def delete_user
 end
 
 def refresh_user
-  @user_1 = User.find_by(name: @name.titleize)
+  @user_1 = User.find_by(name: @name.titleize) unless @name == nil
 end
 
 def log_in
@@ -139,6 +139,8 @@ def load_bands
   if @user_1.bands.empty?
     clear_screen
     print_title
+    puts "There are no bands associated with this account. Let's create a new band for you to get you started."
+    sleep(3)
     create_band
   else
     user_bands = ["Go Back"]

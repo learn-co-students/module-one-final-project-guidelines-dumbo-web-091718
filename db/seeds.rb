@@ -6,9 +6,9 @@ donovan = User.create(name: "Donovan")
 raj = User.create(name: "Raj")
 christine = User.create(name: "Christine")
 
-band1 = hanaa.bands.create(name: "Kings of Leon")
-band2 = hanaa.bands.create(name: "Portugal. The Man")
-band3 = hanaa.bands.create(name: "Drake")
+band1 = hanaa.bands.create(name: "Kings of Leon", genre: "Rock", tech_ability: 1, presentation: 3, lyrics: 2, stage_presence: 4)
+band2 = hanaa.bands.create(name: "Portugal. The Man", genre: "Rock", tech_ability: 2, presentation: 1, lyrics: 4, stage_presence: 3)
+band3 = hanaa.bands.create(name: "Drake", genre: "Rap", tech_ability: 1, presentation: 4, lyrics: 3, stage_presence: 2)
 
 cpu = User.create(name: "CPU")
 
