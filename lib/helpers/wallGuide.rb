@@ -16,30 +16,38 @@ class WallGuide
   end
 
   def self.choose_wall
+    # prompt.select("Which wall do you want to visit?") do |menu|
+    #   menu.default 3
+
+    #   menu.choice 'Scorpion', 1
+    #   menu.choice 'Kano', 2
+    #   menu.choice 'Jax', 3
+    # end
     walls = Wall.all.map { |wall| wall }
     wall_names = walls.map { |wall| wall.name }
     wall_name = prompt.select('Which wall do you want to visit?', wall_names)
     found_wall = Wall.find_by(name: wall_name).id
-    Escort.current_wall_num = found_wall 
+    Escort.current_wall_num = found_wall
+    # binding.pry
     if WallGuide.has_permission?(Escort.current_user, Escort.current_wall_num)
       Escort.options
     else
-      puts "You don't have permission to view that wall."
-      # system "clear"
-      self.choose_wall 
-      system "clear"
+      self.choose_wall
+      # puts "403: You don't have permission to access that."
+      # puts "Choose another wall"
+      # Escort.current_wall_num = gets.chomp
     end
   end
 
   # def self.choose_wall
   #   # Present a list of walls to the user
-  #   # If the user selects a wall that he doesn't have permission to view, he's presented with a 
-  #   # list of walls again 
-  #   walls = Wall.map { |wall| wall } 
+  #   # If the user selects a wall that he doesn't have permission to view, he's presented with a
+  #   # list of walls again
+  #   walls = Wall.map { |wall| wall }
   #   wall_names = walls.map { |wall| wall.name }
   #   wall_name = prompt.select('Which wall do you want to visit?', wall_names)
-  #   found_wall = Wall.find_by(name: wall_name).id 
-  #   Escort.current_wall_num = found_wall 
+  #   found_wall = Wall.find_by(name: wall_name).id
+  #   Escort.current_wall_num = found_wall
 
   #   if WallGuide.has_permission??(Escort.current_user, Escort.c)
   # end
