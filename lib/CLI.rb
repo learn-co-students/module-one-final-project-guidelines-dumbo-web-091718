@@ -45,6 +45,7 @@ def welcome
   puts "Welcome to the Battle of the Bands!"
   @prompt.keypress("Press any key to continue")
   clear_screen
+
   main_menu
 end
 
@@ -292,6 +293,13 @@ def delete_band
   load_bands
 end
 
+def assign_judges
+  @paula = Judge.find_by(name: "Paula Abdul")
+  @paula.update(preferred_att2: ["Presentation", "Lyrics", "tech_ability"].sample)
+  @simon = Judge.find_by(name: "Simon Cowell")
+  @randy = Judge.find_by(name: "Randy Jackson")
+end
+
 
 def create_user_2
   @user_2 = User.find_by(name: "CPU")
@@ -339,7 +347,8 @@ def battle_sequence
 end
 
 def play_band
-  create_judges
+  pid = fork{ exec 'killall afplay'}
+  assign_judges
   create_user_2
 
   battle_sequence
