@@ -23,12 +23,6 @@ class Escort
   end
 
   def self.options
-    puts "To choose a wall, press (1)"
-    puts "To post on this wall, press (2)"
-    puts "To create a new wall, press (3)"
-    puts "To view all posts, press (4)"
-    puts "To quit, press (5)"
-
     choice = prompt.select("What would you like to do?") do |menu|
       menu.choice 'Choose a Wall', 1
       menu.choice 'Post on This Wall', 2
@@ -37,7 +31,6 @@ class Escort
       menu.choice 'Quit', 5 
     end
 
-    # choice = gets.chomp.to_i
     case choice
     when 1
       WallGuide.choose_wall 
