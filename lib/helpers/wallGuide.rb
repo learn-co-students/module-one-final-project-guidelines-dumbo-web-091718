@@ -35,7 +35,8 @@ class WallGuide
     end
 
     if all_msg_on_wall == []
-      puts "This wall is empty :("
+      puts "This wall is empty."
+      puts "\n"
     end
 
     response = prompt.select('What would you like to do?') do |menu|
@@ -68,6 +69,7 @@ class WallGuide
   end
 
   def self.new_post
+    system "clear"
     puts "What do you want to post?"
     content = gets.chomp
 
