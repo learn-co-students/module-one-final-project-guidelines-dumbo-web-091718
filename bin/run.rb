@@ -1,29 +1,32 @@
 require_relative '../config/environment'
 require 'colorize'
 
-pid = fork{ exec 'afplay',"Nyanyanyanyanyanyanya.mp3"}
+pid = fork{ exec 'afplay',"bgmusic.mp3"}
    def welcome_screen
-    puts "Hey, welcome to Fuzzy Friends. Just looking or wanting to adopt?"
-    puts "1. Just looking!"
+     prompt = TTY::Prompt.new
+      puts  " #######                               #######
+ #       #    # ###### ###### #   #    #       #####  # ###### #    # #####   ####
+ #       #    #     #      #   # #     #       #    # # #      ##   # #    # #
+ #####   #    #    #      #     #      #####   #    # # #####  # #  # #    #  ####
+ #       #    #   #      #      #      #       #####  # #      #  # # #    #      #
+ #       #    #  #      #       #      #       #   #  # #      #   ## #    # #    #
+ #        ####  ###### ######   #      #       #    # # ###### #    # #####   ####
+                                                                                    "
+     user_choice = prompt.select("Hey, welcome to Fuzzy Friends. Just looking or wanting to adopt?", ["1. Just looking!", "2. I wanna pet!"])
 
-    puts "2. I wanna pet!"
 
-
-        user_choice = gets.chomp
   end
 
 
   def second_chance
-    puts "Are you SURE you don't want a pet?"
-    puts "1. Okkkkk, I'll get one."
-    puts "2. No. I hate cute things."
-    user_second_chance = gets.chomp
+    prompt = TTY::Prompt.new
+    user_second_chance = prompt.select("Are you SURE you don't want a pet?", ["1. Okkkkk, I'll get one.", "2. No. I hate cute things."])
+
+
   end
 
 
   def print_pets
-    # all_the_pets = Pet.all.each do | pet |
-    #   puts "#{pet.name}: #{pet.kind}, #{pet.temperament}, #{pet.age}"
     puts <<-'EOF'
                  ________________
                 |                |_____    __
@@ -42,16 +45,20 @@ pid = fork{ exec 'afplay',"Nyanyanyanyanyanyanya.mp3"}
   end
 
        ##### USER APPLICATION #####
+
 def create_user
   puts "Great! Before we find you the perfect pet. We need you to fill out a quick application."
   puts "====================="
   puts "What's your name?"  #1
     name = gets.chomp
+    system"clear"
   puts "What city do you live in?" #2
     city = gets.chomp
+    system"clear"
   puts "Last 4 digits of your Social Security?"
     ssn = gets.chomp.to_i
     income  = rand(ssn)
+    system"clear"
   #randomize income range "based on SS"
   puts "We did a Background-Check and your income is $#{income}/month."
     new_user = User.create({name: name, city: city, income:income }) #Create User
@@ -71,22 +78,24 @@ end
 
 def get_users_pet(user)
   puts "❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤"
-  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       "
-  puts "What kind of pet would you want? (Cat, Dog, or Bird)"
-  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       "
+  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       ".colorize(:red)
+  puts "What kind of pet would you want?"
+  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       ".colorize(:red)
   puts "❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤"
 
-    user_pet_kind = gets.chomp.downcase
+   user_pet_kind = TTY::Prompt.new.select("", ["Cat", "Dog", "Bird"]).downcase
+
   puts "❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤"
-  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       "
-  puts "What kind of temperament would you want your pet to have? (Calm, Shy, or Friendly)"
-  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       "
+  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       ".colorize(:red)
+  puts "What kind of temperament would you want your pet to have?"
+  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       ".colorize(:red)
   puts "❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤"
-    user_pet_temper = gets.chomp.downcase
+    user_pet_temper = TTY::Prompt.new.select("", ["Calm", "Shy", "Friendly"]).downcase
+
   puts "❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤"
-  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       "
-  puts "what is the preferred age of your pet?"
-  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       "
+  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       ".colorize(:red)
+  puts "what is the preferred age of your pet? (Enter age)"
+  puts "    ❤      ❤     ❤     ❤      ❤      ❤      ❤       ".colorize(:red)
   puts "❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤"
 
     user_pet_age = gets.chomp.to_i
@@ -104,11 +113,14 @@ def get_users_pet(user)
     the_pets = Pet.all.select do |pet|
       pet.kind == user_pet_kind && pet.temperament == user_pet_temper
     end
-
-    puts "We couldn't find any pets that are #{user_pet_age}-years-old, but here are some #{user_pet_temper} #{user_pet_kind}s:"
+      sleep(2)
+      puts "                                                    "
+      puts "We couldn't find any pets that are #{user_pet_age}-years-old, but here are some other #{user_pet_temper} #{user_pet_kind}s:"
+      puts "                                                    "
 
     the_pets.each do |pet|
       puts "We have #{pet.name} who's #{pet.age}-years-old."
+      puts "                ❤                        ".colorize(:red)
     end
     puts "Which pet do ya like?"
     user_select_name = gets.chomp.capitalize
@@ -120,19 +132,29 @@ def get_users_pet(user)
   end
 end
 
+def return_to_welcome
+  user_answer = TTY::Prompt.new.select("...but would you like to adopt another pet?!", ["Yes! I'm so loney.", "I'm good, thanks."])
+end
+
 
 def run_app
   welcome_response = welcome_screen
-  if welcome_response != "1"
+  if welcome_response != "1. Just looking!"
     created_user = create_user
     return if !created_user
   else
     print_pets
-    if second_chance == "1"
+    if second_chance == "1. Okkkkk, I'll get one."
       created_user = create_user
       return if !created_user
     else
-      puts "Ok... loser. Never show your face here again!"
+      puts "============================================="
+      puts "               STOP THE MUSIC!               "
+      puts "============================================="
+      puts "        Never show your face here again!     "
+      puts "                                             "
+      puts "               (╯°□°）╯︵ ┻━┻"
+      puts "============================================="
       return
     end
 
@@ -140,6 +162,10 @@ def run_app
 
   get_users_pet(created_user)
 
+  return_screen = return_to_welcome
+  if return_screen == "Yes! I'm so loney."
+    run_app
+  end
 end
 
 run_app
