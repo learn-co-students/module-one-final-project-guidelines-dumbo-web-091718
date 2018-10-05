@@ -65,8 +65,6 @@ def main_menu
 end
 
 def exit_game
-  pid = fork{ exec 'killall afplay'}
-  clear_screen
 end
 
 def create_account
@@ -93,9 +91,9 @@ def create_account
 end
 
 def loading_bar
-  bar = ProgressBar.new(50, :bar, :percentage)
+  bar = ProgressBar.new(120, :bar, :percentage)
 
-  50.times do
+  120.times do
     sleep 0.1
     bar.increment!
   end
@@ -353,7 +351,25 @@ def battle_sequence
   sleep(2)
   clear_screen
   # puts "#{@band_1.name.}"
+  performance(@band_1)
+  performance(@band_2)
+  pid = fork{ exec 'killall afplay'}
+end
+
+def performance(band)
+  puts "#{band.name.upcase} PERFORMANCE UNDERWAY..."
+  case band.genre
+  when "Pop"
+    pid = fork{exec 'afplay', '/Users/donovandwyer/Development/code/module-one-final-project-guidelines-dumbo-web-091718/lib/popsnip.wav'}
+  when "Rock"
+    pid = fork{exec 'afplay', '/Users/donovandwyer/Development/code/module-one-final-project-guidelines-dumbo-web-091718/lib/rocksnip.wav'}
+  when "Rap"
+    pid = fork{exec 'afplay', '/Users/donovandwyer/Development/code/module-one-final-project-guidelines-dumbo-web-091718/lib/rapsnip.wav'}
+  when "Country"
+    pid = fork{exec 'afplay', '/Users/donovandwyer/Development/code/module-one-final-project-guidelines-dumbo-web-091718/lib/countrysnip.wav'}
+  end
   loading_bar
+  clear_screen
 end
 
 def play_band
