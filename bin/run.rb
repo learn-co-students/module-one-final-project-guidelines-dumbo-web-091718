@@ -270,13 +270,29 @@ end
 
 
 def judge_scores(band)
-  judge_scores = {}
+
   # binding.pry
+  judge_scores = {}
+
   Judge.all.each do |judge|
     judge_scores[judge.name] = judge.grade(band)
   end
+  # judge_responses = self.map do |judge|
+  #   judge.content
+  # end
+  # binding.pry
+
+
   return judge_scores
 end
+
+# def evaluate_scores
+#   responses = Judge.all.each do |judge|
+#     judge.judge_responses
+#   end
+#   binding.pry
+#   responses
+# end
 
 def audience_scores(band)
   @audience = band.create_audience
@@ -285,10 +301,35 @@ end
 #
 # # run method right before play_band to make sure all columns have their proper input
 #
+# def judge_responses(name)
+#   sel_judge = Judge.find_by(name: name)
+#   responses = sel_judge.responses.map do |response|
+#     response.content
+#   end
+#   responses
+#   # binding.pry
+#   # Response.all.select do |response|
+#   #   response.judge_id == sel_judge.id
+#   # end.content
+# end
 #
+
+def return_responses(band)
+  responses = Judge.all.each {|judge| judge.evaluate_scores(band)}
+
+end
+
+
 def play_band
 #
+# `afplay my_song.mp3`
+
     create_user_2
+    return_responses(@band_1)
+    # binding.pry
+    # return_responses(@band_2)
+
+
 #   #binding.pry
     band_1_score = judge_scores(@band_1).values.sum + audience_scores(@band_1) / 4
     band_2_score = judge_scores(@band_2).values.sum + audience_scores(@band_2) / 4

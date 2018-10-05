@@ -18,14 +18,14 @@ paula = Judge.create(name: "Paula Abdul", preferred_att1: "stage_presence", pref
 randy = Judge.create(name: "Randy Jackson", preferred_att1: "lyrics", preferred_att2: "presentation")
 
 #Simon Response
-bad = Response.create(judge: simon, content: "Oh God, I thought that was absolutely dreadful", score: 0)
-ok = Response.create(judge: simon, content: "Although it was good...", score: 1)
-good = Response.create(judge: simon, content: "I'm so, so pleased", score: 2)
+bad = Response.create(judge: simon, content: "Absolutely Dreadful", score: 0)
+ok = Response.create(judge: simon, content: "Although it was good", score: 1)
+good = Response.create(judge: simon, content: "Im pleased", score: 2)
 
 #Paula Response
 bad = Response.create(judge: paula, content: "Awful", score: 0)
-ok = Response.create(judge: paula, content: "It was okay", score: 1)
-good = Response.create(judge: paula, content: "That was amazing", score: 2)
+ok = Response.create(judge: paula, content: "Ultra cool", score: 1)
+good = Response.create(judge: paula, content: "You gave us chills", score: 2)
 #
 
 #Randy Response
