@@ -31,7 +31,6 @@ class Greeter
     end
 
     password = prompt.mask('What is your password?')
-
     4.times do
       if User.find_by(name: username).password != password
         system "clear"

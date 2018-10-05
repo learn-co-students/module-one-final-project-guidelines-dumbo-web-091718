@@ -9,7 +9,7 @@ class WallGuide
   end
 
   def self.choose_wall
-    walls = Wall.all.map { |wall| wall }
+    walls = Wall.all.select{|wall| WallGuide.has_permission?(Escort.current_user,wall)}
     wall_names = walls.map { |wall| wall.name }
     wall_name = prompt.select('Which wall do you want to visit?', wall_names)
     found_wall = Wall.find_by(name: wall_name).id
@@ -117,7 +117,7 @@ class WallGuide
       puts "NO ONE NEEDS PERMISSION TO VIEW IT."
       puts "GET OFF MY LAWN."
       Escort.options
-    end 
+    end
     username = prompt.select('Which user do you want to invite?', usernames.map(&:name))
 
     self.grant_permission(User.find_by(:name => username))
