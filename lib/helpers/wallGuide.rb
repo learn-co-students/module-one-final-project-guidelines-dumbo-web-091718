@@ -16,26 +16,16 @@ class WallGuide
   end
 
   def self.choose_wall
-    # prompt.select("Which wall do you want to visit?") do |menu|
-    #   menu.default 3
-
-    #   menu.choice 'Scorpion', 1
-    #   menu.choice 'Kano', 2
-    #   menu.choice 'Jax', 3
-    # end
     walls = Wall.all.map { |wall| wall }
     wall_names = walls.map { |wall| wall.name }
     wall_name = prompt.select('Which wall do you want to visit?', wall_names)
     found_wall = Wall.find_by(name: wall_name).id
     Escort.current_wall_num = found_wall
-    # binding.pry
     if WallGuide.has_permission?(Escort.current_user, Escort.current_wall_num)
       Escort.options
     else
+      puts "You don't have permission to access that wall."
       self.choose_wall
-      # puts "403: You don't have permission to access that."
-      # puts "Choose another wall"
-      # Escort.current_wall_num = gets.chomp
     end
   end
 
