@@ -57,7 +57,7 @@ cpuband35 = cpu.bands.create(name: "Brooks & Dunn", genre: "Country", tech_abili
 cpuband36 = cpu.bands.create(name: "Dierks Bentley", genre: "Country", tech_ability: 3, presentation: 2, lyrics: 4, stage_presence: 1)
 cpuband37 = cpu.bands.create(name: "Kenny Chesney", genre: "Country", tech_ability: 1, presentation: 4, lyrics: 3, stage_presence: 2)
 cpuband38 = cpu.bands.create(name: "Brad Paisley", genre: "Country", tech_ability: 4, presentation: 3, lyrics: 1, stage_presence: 2)
-
-@simon = Judge.create(name: "Simon Cowell", preferred_att1: "tech_ability", preferred_att2: "presentation")
-@paula = Judge.create(name: "Paula Abdul", preferred_att1: "stage_presence", preferred_att2: ["tech_ability", "presentation", "lyrics"].sample)
-@randy = Judge.create(name: "Randy Jackson", preferred_att1: "lyrics", preferred_att2: "presentation")
+# 
+# Judge.create(name: "Simon Cowell", preferred_att1: "tech_ability", preferred_att2: "presentation")
+# Judge.create(name: "Paula Abdul", preferred_att1: "stage_presence", preferred_att2: "lyrics")
+# Judge.create(name: "Randy Jackson", preferred_att1: "lyrics", preferred_att2: "presentation")

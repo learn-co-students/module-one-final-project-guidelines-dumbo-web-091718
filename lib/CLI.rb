@@ -1,6 +1,9 @@
 require_relative '../config/environment'
 require 'progress_bar'
 require 'pry'
+require 'catpix'
+require 'rmagick'
+
 
 def clear_screen
   puts `clear`
@@ -51,7 +54,7 @@ end
 
 def main_menu
   print_title
-  choice = @prompt.select("Would you like to create a new account or log in to an existing account?", ["Login", "Sign Up", "Exit"])
+  choice = @prompt.select("Would you like to create a new account or log in to an existing account?", ["Sign Up", "Login", "Exit"])
   if choice == "Login"
     log_in
   elsif choice == "Exit"
@@ -62,6 +65,7 @@ def main_menu
 end
 
 def exit_game
+  pid = fork{ exec 'killall afplay'}
 end
 
 def create_account
@@ -88,9 +92,9 @@ def create_account
 end
 
 def loading_bar
-  bar = ProgressBar.new(100, :bar, :percentage)
+  bar = ProgressBar.new(50, :bar, :percentage)
 
-  100.times do
+  50.times do
     sleep 0.1
     bar.increment!
   end
@@ -294,10 +298,13 @@ def delete_band
 end
 
 def assign_judges
-  @paula = Judge.find_by(name: "Paula Abdul")
-  @paula.update(preferred_att2: ["Presentation", "Lyrics", "tech_ability"].sample)
-  @simon = Judge.find_by(name: "Simon Cowell")
-  @randy = Judge.find_by(name: "Randy Jackson")
+  # @paula = Judge.find_by(name: "Paula Abdul")
+  # @paula.update(preferred_att2: ["Presentation", "Lyrics", "tech_ability"].sample)
+  # @simon = Judge.find_by(name: "Simon Cowell")
+  # @randy = Judge.find_by(name: "Randy Jackson")
+  @simon = Judge.create(name: "Simon Cowell", preferred_att1: "tech_ability", preferred_att2: "presentation")
+  @paula = Judge.create(name: "Paula Abdul", preferred_att1: "stage_presence", preferred_att2: "lyrics")
+  @randy = Judge.create(name: "Randy Jackson", preferred_att1: "lyrics", preferred_att2: "presentation")
 end
 
 
@@ -342,7 +349,7 @@ def battle_sequence
   puts "NOW!"
   sleep(2)
   clear_screen
-  puts "BATTLE IN PROGRESS"
+  # puts "#{@band_1.name.}"
   loading_bar
 end
 
