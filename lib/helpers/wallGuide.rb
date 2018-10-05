@@ -14,13 +14,7 @@ class WallGuide
     wall_name = prompt.select('Which wall do you want to visit?', wall_names)
     found_wall = Wall.find_by(name: wall_name).id
     Escort.current_wall_num = found_wall
-    if WallGuide.has_permission?
-      WallGuide.read_wall
-    else
-      puts "403: You don't have permission to access that."
-      puts "Choose another wall"
-      self.choose_wall
-    end
+    WallGuide.read_wall
   end
 
   def self.read_wall
