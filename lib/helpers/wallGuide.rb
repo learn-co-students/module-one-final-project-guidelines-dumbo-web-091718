@@ -40,12 +40,15 @@ class WallGuide
 
     puts ""
     puts "To delete the wall, enter 'd'"
+    puts "To post on this wall, enter 'p'"
     puts "To view the main menu, enter 'm'"
     response = gets.chomp.downcase
     if response == "d"
       WallGuide.delete_wall
     elsif response == "m"
       Escort.options
+    elsif response == 'p'
+      WallGuide.post
     else
       WallGuide.read
     end
@@ -55,7 +58,7 @@ class WallGuide
     system "clear"
     if ( Userwall.exists?(:user_id => Escort.current_user.id) &&
       Userwall.find_by(:user_id => Escort.current_user.id).wall_id == Escort.current_wall_num )
-      Wall.find_by(:id => Escort.current_wall_num).delete_wall
+      Wall.find_by(:id => Escort.current_wall_num).delete
       puts "Wall was successfully deleted"
     else
       puts "You don't have permission to delete that wall."
@@ -95,6 +98,10 @@ class WallGuide
     truncated_msg = prompt.select('Which post would you like to view?', messages)
     puts truncated_msg
 
-    Escort.options
+    # upon selection of a message, a user should be prompted:
+    # delete message
+    # or back to messages
+    # or back to main menu Escort.options
+
   end
 end
