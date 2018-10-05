@@ -18,10 +18,16 @@ class Greeter
     system "clear"
     username = prompt.ask('What is your username?', required: true)
 
-    while !User.exists?(:name => username)
-      system "clear"
-      puts "User doesn't exist. Try again."
-      username = prompt.ask('What is your username?')
+    i = 0
+    while i < 4
+      if !User.exists?(:name => username) && i == 3
+        exit
+      elsif !User.exists?(:name => username)
+        system "clear"
+        puts "User doesn't exist. Try again."
+        username = prompt.ask('What is your username?')
+      end
+      i += 1
     end
 
     password = prompt.mask('What is your password?')
