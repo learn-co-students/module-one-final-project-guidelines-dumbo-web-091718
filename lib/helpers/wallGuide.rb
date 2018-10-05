@@ -57,9 +57,12 @@ class WallGuide
 
   def self.delete_wall
     system "clear"
-    if ( Userwall.exists?(:user_id => Escort.current_user.id) &&
-      Userwall.find_by(:user_id => Escort.current_user.id).wall_id == Escort.current_wall_num )
+
+    if Userwall.exists?(:user_id => Escort.current_user.id, :wall_id => Escort.current_wall_num)
       Wall.find_by(:id => Escort.current_wall_num).delete
+      Message.where(:wall_id => Escort.current_wall_num).delete_all
+      Permission.where(:wall_id => Escort.current_wall_num).delete_all
+      Userwall.where(:wall_id => Escort.current_wall_num).delete_all
       puts "Wall was successfully deleted"
     else
       puts "You don't have permission to delete that wall."
