@@ -106,24 +106,19 @@ class WallGuide
     end
 
     if choice == 1
-      # Find the message we're trying to delete 
+      # Find the message we're trying to delete
       found_message = Message.find_by(content: truncated_msg)
       found_message.destroy
       system "clear"
       puts "Message successfully deleted."
       # binding.pry
-    elsif choice == 2 
+    elsif choice == 2
       system "clear"
       self.my_posts
-    elsif choice == 3 
+    elsif choice == 3
       system "clear"
       Escort.options
     end
-
-    # upon selection of a message, a user should be prompted:
-    # delete message
-    # or back to messages
-    # or back to main menu Escort.options
 
   end
 end

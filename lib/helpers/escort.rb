@@ -25,7 +25,6 @@ class Escort
   def self.options
     choice = prompt.select("What would you like to do?") do |menu|
       menu.choice 'Choose a Wall', 1
-      menu.choice 'Post on This Wall', 2
       menu.choice 'Create a New Wall', 3
       menu.choice 'View all Posts', 4
       menu.choice 'Quit', 5
@@ -35,9 +34,6 @@ class Escort
     when 1
       system "clear"
       WallGuide.choose_wall
-    when 2
-      system "clear"
-      WallGuide.new_post
     when 3
       system "clear"
       WallGuide.new_wall
