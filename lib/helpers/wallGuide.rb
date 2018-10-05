@@ -49,9 +49,9 @@ class WallGuide
       WallGuide.new_post
     elsif response == 3
       WallGuide.select_user_to_grant_perm
-    elsif response == 6 
+    elsif response == 6
       self.select_users_to_deny_permission
-    elsif response == 4
+    elsif response == 5
       Escort.options
     else
       WallGuide.read_wall
@@ -105,12 +105,10 @@ class WallGuide
 
   end
 
-  def self.select_users_to_deny_permission 
+  def self.select_users_to_deny_permission
     usernames = User.all.select do |user|
       self.has_permission?(user, Escort.current_wall_num)
     end.map(&:name)
-
-    binding.pry
 
     choice = prompt.select('Which user do you want to revoke permission from?', usernames)
     self.revoke_permission(User.find_by(name: choice))
@@ -144,7 +142,7 @@ class WallGuide
   end
 
   def self.revoke_permission(user)
-    Permission.find_by(user_id: user.id).destroy 
+    Permission.find_by(user_id: user.id, wall_id: Escort.current_wall_num).destroy
   end
 
   def self.my_posts
