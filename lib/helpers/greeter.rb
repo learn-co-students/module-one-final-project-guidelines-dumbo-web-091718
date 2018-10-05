@@ -55,5 +55,4 @@ class Greeter
     WallGuide.choose_wall
   end
 
-
 end
