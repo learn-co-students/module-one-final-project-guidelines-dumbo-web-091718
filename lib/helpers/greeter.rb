@@ -46,7 +46,6 @@ class Greeter
     end
 
     password = prompt.mask('Enter a password: ')
-
     Escort.current_user = User.create(name: username, password: password)
     wall_id = Wall.create(name: Escort.current_user.name).id
     Permission.create do |u|
