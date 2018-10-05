@@ -37,7 +37,7 @@ class Escort
       WallGuide.choose_wall
     when 2
       system "clear"
-      WallGuide.post
+      WallGuide.new_post
     when 3
       system "clear"
       WallGuide.new_wall
