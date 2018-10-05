@@ -49,8 +49,8 @@ class Greeter
     Escort.current_user = User.create(name: username, password: password)
     wall_id = Wall.create(name: Escort.current_user.name).id
     Permission.create do |u|
-      u.user_id= Escort.current_user.id
-      u.wall_id= wall_id
+      u.user_id = Escort.current_user.id
+      u.wall_id = wall_id
     end
     WallGuide.choose_wall
   end

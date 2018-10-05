@@ -48,7 +48,7 @@ class WallGuide
     elsif response == "m"
       Escort.options
     elsif response == 'p'
-      WallGuide.post
+      WallGuide.new_post
     else
       WallGuide.read
     end
@@ -88,15 +88,37 @@ class WallGuide
   end
 
   def self.my_posts
+
     if Message.all.size == 0
       puts "There are no messages to view."
       Escort.options
     end
 
     messages = Message.where(:user_id => Escort.current_user.id).map(&:content)
-    truncated_msgs = messages.map { |msg| msg[0, 20] + " ..." }
+    # truncated_msgs = messages.map { |msg| msg[0, 20] + " ..." }
     truncated_msg = prompt.select('Which post would you like to view?', messages)
     puts truncated_msg
+
+    choice = prompt.select("What would you like to do?") do |menu|
+      menu.choice 'Delete Message', 1
+      menu.choice 'Back to Messages', 2
+      menu.choice 'Main Menu', 3
+    end
+
+    if choice == 1
+      # Find the message we're trying to delete 
+      found_message = Message.find_by(content: truncated_msg)
+      found_message.destroy
+      system "clear"
+      puts "Message successfully deleted."
+      # binding.pry
+    elsif choice == 2 
+      system "clear"
+      self.my_posts
+    elsif choice == 3 
+      system "clear"
+      Escort.options
+    end
 
     # upon selection of a message, a user should be prompted:
     # delete message
