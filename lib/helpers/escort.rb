@@ -44,5 +44,4 @@ class Escort
       exit
     end
   end
-
 end

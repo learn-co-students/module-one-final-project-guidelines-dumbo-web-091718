@@ -38,17 +38,18 @@ class WallGuide
       puts "This wall is empty :("
     end
 
-    puts ""
-    puts "To delete the wall, enter 'd'"
-    puts "To post on this wall, enter 'p'"
-    puts "To view the main menu, enter 'm'"
-    response = gets.chomp.downcase
-    if response == "d"
+    response = prompt.select('What would you like to do?') do |menu|
+      menu.choice 'Delete the Wall', 1
+      menu.choice 'Post on This Wall', 2
+      menu.choice 'View the Main Menu', 3
+    end
+
+    if response == 1
       WallGuide.delete_wall
-    elsif response == "m"
-      Escort.options
-    elsif response == 'p'
+    elsif response == 2
       WallGuide.new_post
+    elsif response == 3
+      Escort.options
     else
       WallGuide.read
     end
@@ -88,7 +89,6 @@ class WallGuide
   end
 
   def self.my_posts
-
     if Message.all.size == 0
       puts "There are no messages to view."
       Escort.options
