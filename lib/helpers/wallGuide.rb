@@ -106,11 +106,11 @@ class WallGuide
     end
 
     if choice == 1
-      # Find the message we're trying to delete
+      # Find the message we're trying to delete 
+      puts "Message successfully deleted."
       found_message = Message.find_by(content: truncated_msg)
       found_message.destroy
-      system "clear"
-      puts "Message successfully deleted."
+      # system "clear"
       # binding.pry
     elsif choice == 2
       system "clear"
