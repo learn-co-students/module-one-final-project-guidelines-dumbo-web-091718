@@ -5,7 +5,7 @@ class WallGuide
   end
 
   def self.has_permission?(user= Escort.current_user, wall_num= Escort.current_wall_num)
-    Permission.find_by(:user_id => user.id, :wall_id => wall_num)
+    Permission.exists?(:user_id => user.id, :wall_id => wall_num)
   end
 
   def self.choose_wall
@@ -15,7 +15,7 @@ class WallGuide
     found_wall = Wall.find_by(name: wall_name).id
     Escort.current_wall_num = found_wall
     if WallGuide.has_permission?
-      WallGuide.read
+      WallGuide.read_wall
     else
       puts "403: You don't have permission to access that."
       puts "Choose another wall"
@@ -23,7 +23,7 @@ class WallGuide
     end
   end
 
-  def self.read
+  def self.read_wall
     system "clear"
     all_msg_on_wall = Message.where(wall_id: Escort.current_wall_num).order(created_at: :desc)
     all_msg_on_wall.each do |msg|
@@ -41,7 +41,10 @@ class WallGuide
     response = prompt.select('What would you like to do?') do |menu|
       menu.choice 'Delete the Wall', 1
       menu.choice 'Post on This Wall', 2
-      menu.choice 'View the Main Menu', 3
+      if Userwall.exists?(:user_id => Escort.current_user.id, :wall_id => Escort.current_wall_num)
+        menu.choice 'Grant Access to Other Users', 3
+      end
+      menu.choice 'View the Main Menu', 4
     end
 
     if response == 1
@@ -49,15 +52,15 @@ class WallGuide
     elsif response == 2
       WallGuide.new_post
     elsif response == 3
+      WallGuide.select_user_to_grant_perm
+    elsif response == 4
       Escort.options
     else
-      WallGuide.read
+      WallGuide.read_wall
     end
   end
 
   def self.delete_wall
-    system "clear"
-
     if Userwall.exists?(:user_id => Escort.current_user.id, :wall_id => Escort.current_wall_num)
       Wall.find_by(:id => Escort.current_wall_num).delete
       Message.where(:wall_id => Escort.current_wall_num).delete_all
@@ -88,7 +91,46 @@ class WallGuide
     Escort.current_wall_num = Wall.create(name: new_wall_name).id
     Permission.create(user_id: Escort.current_user.id, wall_id: Escort.current_wall_num)
     Userwall.create(user_id: Escort.current_user.id, wall_id: Escort.current_wall_num)
-    WallGuide.read
+
+    choice = prompt.select('What status do you want to grant this wall?') do |menu|
+      menu.choice 'Public - Everyone can see this', 1
+      menu.choice 'Private - Only invited users can see this', 2
+    end
+
+    if choice == 1
+      self.grant_permission("all")
+    elsif choice == 2
+      WallGuide.select_user_to_grant_perm
+    end
+    Escort.options
+
+  end
+
+  def self.select_user_to_grant_perm
+    # usernames should be all users who curr dont have permission
+    # usernames = User.all.map(&:name)
+    usernames = User.all.select do |user|
+      !self.has_permission?(user, Escort.current_wall_num)
+    end
+    if usernames == []
+      puts "THIS IS A PUBLIC WALL ALREADY."
+      puts "NO ONE NEEDS PERMISSION TO VIEW IT."
+      puts "GET OFF MY LAWN."
+      Escort.options
+    end 
+    username = prompt.select('Which user do you want to invite?', usernames.map(&:name))
+
+    self.grant_permission(User.find_by(:name => username))
+  end
+
+  def self.grant_permission(user)
+    if user == "all"
+      User.all.each do |user|
+        Permission.create(user_id: user.id, wall_id: Escort.current_wall_num)
+      end
+    else
+      Permission.create(user_id: user.id, wall_id: Escort.current_wall_num)
+    end
   end
 
   def self.my_posts
@@ -110,7 +152,7 @@ class WallGuide
     if choice == 1
       puts "Message successfully deleted."
       Message.find_by(content: truncated_msg).destroy
-    elsif choice == 2 
+    elsif choice == 2
       system "clear"
       self.my_posts
     elsif choice == 3
