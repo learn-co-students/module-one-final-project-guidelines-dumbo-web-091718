@@ -113,7 +113,7 @@ class WallGuide
     binding.pry
 
     choice = prompt.select('Which user do you want to revoke permission from?', usernames)
-    self.revoke_permission(User.find_by(name: choice).id)
+    self.revoke_permission(User.find_by(name: choice))
   end
 
   def self.select_user_to_grant_perm
@@ -144,7 +144,7 @@ class WallGuide
   end
 
   def self.revoke_permission(user)
-    Permission.find(user_id: user.id).destroy 
+    Permission.find_by(user_id: user.id).destroy 
   end
 
   def self.my_posts
