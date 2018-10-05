@@ -44,8 +44,9 @@ class WallGuide
       menu.choice 'Post on This Wall', 2
       if Userwall.exists?(:user_id => Escort.current_user.id, :wall_id => Escort.current_wall_num)
         menu.choice 'Grant Access to Other Users', 3
+        menu.choice 'Revoke Permission', 6
       end
-      menu.choice 'View the Main Menu', 4
+      menu.choice 'View the Main Menu', 5
     end
 
     if response == 1
@@ -54,6 +55,8 @@ class WallGuide
       WallGuide.new_post
     elsif response == 3
       WallGuide.select_user_to_grant_perm
+    elsif response == 6 
+      self.select_users_to_deny_permission
     elsif response == 4
       Escort.options
     else
@@ -108,6 +111,17 @@ class WallGuide
 
   end
 
+  def self.select_users_to_deny_permission 
+    usernames = User.all.select do |user|
+      self.has_permission?(user, Escort.current_wall_num)
+    end.map(&:name)
+
+    binding.pry
+
+    choice = prompt.select('Which user do you want to revoke permission from?', usernames)
+    self.revoke_permission(User.find_by(name: choice).id)
+  end
+
   def self.select_user_to_grant_perm
     # usernames should be all users who curr dont have permission
     # usernames = User.all.map(&:name)
@@ -135,6 +149,10 @@ class WallGuide
     end
   end
 
+  def self.revoke_permission(user)
+    Permission.find(user_id: user.id).destroy 
+  end
+
   def self.my_posts
     if Message.all.size == 0
       puts "There are no messages to view."
@@ -154,6 +172,8 @@ class WallGuide
     if choice == 1
       puts "Message successfully deleted."
       Message.find_by(content: truncated_msg).destroy
+      system "clear"
+      Escort.options
     elsif choice == 2
       system "clear"
       self.my_posts
