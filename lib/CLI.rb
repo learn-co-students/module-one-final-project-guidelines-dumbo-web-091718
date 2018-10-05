@@ -66,6 +66,7 @@ end
 
 def exit_game
   pid = fork{ exec 'killall afplay'}
+  clear_screen
 end
 
 def create_account
@@ -129,6 +130,8 @@ def log_in
 end
 
 def loading
+  clear_screen
+  print_title
   @spinner.auto_spin
   sleep(2)
   @spinner.stop
