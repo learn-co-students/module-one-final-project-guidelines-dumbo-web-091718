@@ -112,18 +112,13 @@ class WallGuide
       found_message.destroy
       # system "clear"
       # binding.pry
-    elsif choice == 2 
+    elsif choice == 2
       system "clear"
       self.my_posts
-    elsif choice == 3 
+    elsif choice == 3
       system "clear"
       Escort.options
     end
-
-    # upon selection of a message, a user should be prompted:
-    # delete message
-    # or back to messages
-    # or back to main menu Escort.options
 
   end
 end
