@@ -9,7 +9,6 @@ class WallGuide
   end
 
   def self.choose_wall
-
     walls = Wall.all.map { |wall| wall }
     wall_names = walls.map { |wall| wall.name }
     wall_name = prompt.select('Which wall do you want to visit?', wall_names)
@@ -24,10 +23,8 @@ class WallGuide
     end
   end
 
-
   def self.read
     system "clear"
-
     all_msg_on_wall = Message.where(wall_id: Escort.current_wall_num).order(created_at: :desc)
     all_msg_on_wall.each do |msg|
       system ""
@@ -61,7 +58,6 @@ class WallGuide
       Wall.find_by(:id => Escort.current_wall_num).delete_wall
       puts "Wall was successfully deleted"
     else
-      binding.pry
       puts "You don't have permission to delete that wall."
     end
     WallGuide.choose_wall
