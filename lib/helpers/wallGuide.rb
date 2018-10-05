@@ -95,7 +95,6 @@ class WallGuide
     end
 
     messages = Message.where(:user_id => Escort.current_user.id).map(&:content)
-    # truncated_msgs = messages.map { |msg| msg[0, 20] + " ..." }
     truncated_msg = prompt.select('Which post would you like to view?', messages)
     puts truncated_msg
 
@@ -106,12 +105,8 @@ class WallGuide
     end
 
     if choice == 1
-      # Find the message we're trying to delete 
       puts "Message successfully deleted."
-      found_message = Message.find_by(content: truncated_msg)
-      found_message.destroy
-      # system "clear"
-      # binding.pry
+      Message.find_by(content: truncated_msg).destroy
     elsif choice == 2 
       system "clear"
       self.my_posts
