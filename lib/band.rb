@@ -28,6 +28,9 @@ class Band < ActiveRecord::Base
         preferred_att2: "stage_presence"
       }
     }
+
+    #Use find_by method by iterating through hash and finding it equal to self.genre
+
     case self.genre
     when "Pop"
       stat_hash = genres[:pop]

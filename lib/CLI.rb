@@ -65,7 +65,6 @@ def main_menu
 end
 
 def exit_game
-  pid = fork{ exec 'killall afplay'}
 end
 
 def create_account
@@ -92,9 +91,9 @@ def create_account
 end
 
 def loading_bar
-  bar = ProgressBar.new(50, :bar, :percentage)
+  bar = ProgressBar.new(120, :bar, :percentage)
 
-  50.times do
+  120.times do
     sleep 0.1
     bar.increment!
   end
@@ -129,6 +128,8 @@ def log_in
 end
 
 def loading
+  clear_screen
+  print_title
   @spinner.auto_spin
   sleep(2)
   @spinner.stop
@@ -313,6 +314,7 @@ def create_user_2
   @band_2 = @user_2.bands.sample
 end
 
+<<<<<<< HEAD
 def judge_scores
   x = 0
   y = 0
@@ -335,6 +337,78 @@ def audience_scores
   return x, y
 end
 
+=======
+def judge_scores(band)
+
+  # binding.pry
+  judge_scores = {}
+
+  Judge.all.each do |judge|
+    judge_scores[judge.name] = judge.grade(band)
+  end
+
+
+  return judge_scores
+end
+
+# def create_audience(band)
+#   band.create_audience
+# end
+
+
+def audience_scores(band)
+  @audience = band.create_audience
+  return @audience.grade(band)
+end
+#
+#
+
+def return_responses(band)
+  clear_screen
+  puts "And now, let's hear from the judges for #{band.name}!"
+  sleep(3)
+  Judge.all.each do |judge|
+    puts ""
+    puts "#{judge.name}'s Response"
+    puts ""
+    judge.evaluate_scores(band)
+    sleep(5)
+  end
+end
+
+
+# def play_band
+# #
+# # `afplay my_song.mp3`
+#
+#     create_user_2
+#     return_responses(@band_1)
+#     # binding.pry
+#     return_responses(@band_2)
+#
+#
+# #   #binding.pry
+#     band_1_score = judge_scores(@band_1).values.sum + audience_scores(@band_1) / 4
+#     band_2_score = judge_scores(@band_2).values.sum + audience_scores(@band_2) / 4
+# #   band_1_score = (score4)/4
+# #   band_2_score = (score3)/4
+# #
+# # # judge_results
+# #
+# clear_screen
+#
+#   if band_1_score > band_2_score
+#     puts "#{@band_1.name} is the winner!"
+#   elsif band_2_score > band_1_score
+#     puts "#{@band_2.name} is the winner!"
+#   elsif band_1_score == band_2_score
+#     puts "It's a tie!"
+#   end
+#
+# end
+
+
+>>>>>>> merge-changes
 def battle_sequence
   clear_screen
   sleep(2)
@@ -350,21 +424,42 @@ def battle_sequence
   sleep(2)
   clear_screen
   # puts "#{@band_1.name.}"
+  performance(@band_1)
+  performance(@band_2)
+  pid = fork{ exec 'killall afplay'}
+end
+
+def performance(band)
+  puts "#{band.name.upcase} PERFORMANCE UNDERWAY..."
+  case band.genre
+  when "Pop"
+    pid = fork{exec 'afplay', '/Users/donovandwyer/Development/code/module-one-final-project-guidelines-dumbo-web-091718/lib/popsnip.wav'}
+  when "Rock"
+    pid = fork{exec 'afplay', '/Users/donovandwyer/Development/code/module-one-final-project-guidelines-dumbo-web-091718/lib/rocksnip.wav'}
+  when "Rap"
+    pid = fork{exec 'afplay', '/Users/donovandwyer/Development/code/module-one-final-project-guidelines-dumbo-web-091718/lib/rapsnip.wav'}
+  when "Country"
+    pid = fork{exec 'afplay', '/Users/donovandwyer/Development/code/module-one-final-project-guidelines-dumbo-web-091718/lib/countrysnip.wav'}
+  end
   loading_bar
+  clear_screen
 end
 
 def play_band
   pid = fork{ exec 'killall afplay'}
-  assign_judges
   create_user_2
 
   battle_sequence
 
-  score3, score4 = judge_scores
-  score1, score2 = audience_scores
 
-  band_1_score = (score1 + score3)/4
-  band_2_score = (score2 + score4)/4
+  return_responses(@band_1)
+  # binding.pry
+  return_responses(@band_2)
+
+  band_1_score = judge_scores(@band_1).values.sum + audience_scores(@band_1) / 4
+  band_2_score = judge_scores(@band_2).values.sum + audience_scores(@band_2) / 4
+#   #binding.pry
+
 
   if band_1_score > band_2_score
     clear_screen
@@ -387,3 +482,5 @@ def continue?
     exit_game
   end
 end
+
+################################################################
