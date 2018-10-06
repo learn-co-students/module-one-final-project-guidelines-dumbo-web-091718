@@ -1,6 +1,7 @@
 User.destroy_all
 Band.destroy_all
 Judge.destroy_all
+Response.destroy_all
 
 hanaa = User.create(name: "Hanaa")
 donovan = User.create(name: "Donovan")
@@ -57,7 +58,34 @@ cpuband35 = cpu.bands.create(name: "Brooks & Dunn", genre: "Country", tech_abili
 cpuband36 = cpu.bands.create(name: "Dierks Bentley", genre: "Country", tech_ability: 3, presentation: 2, lyrics: 4, stage_presence: 1)
 cpuband37 = cpu.bands.create(name: "Kenny Chesney", genre: "Country", tech_ability: 1, presentation: 4, lyrics: 3, stage_presence: 2)
 cpuband38 = cpu.bands.create(name: "Brad Paisley", genre: "Country", tech_ability: 4, presentation: 3, lyrics: 1, stage_presence: 2)
-# 
+#
 # Judge.create(name: "Simon Cowell", preferred_att1: "tech_ability", preferred_att2: "presentation")
 # Judge.create(name: "Paula Abdul", preferred_att1: "stage_presence", preferred_att2: "lyrics")
 # Judge.create(name: "Randy Jackson", preferred_att1: "lyrics", preferred_att2: "presentation")
+#Creating Judges
+simon = Judge.create(name: "Simon Cowell", preferred_att1: "technical ability", preferred_att2: "presentation")
+paula = Judge.create(name: "Paula Abdul", preferred_att1: "stage_presence", preferred_att2: ["tech_ability", "presentation", "lyrics"].sample)
+randy = Judge.create(name: "Randy Jackson", preferred_att1: "lyrics", preferred_att2: "presentation")
+# audience = Judge.find_by(name: "Audience")
+
+#Simon Response
+bad = Response.create(judge: simon, content: "Absolutely Dreadful", score: 0)
+ok = Response.create(judge: simon, content: "Although it was good", score: 1)
+good = Response.create(judge: simon, content: "Im pleased", score: 2)
+
+#Paula Response
+bad = Response.create(judge: paula, content: "Oh boy", score: 0)
+ok = Response.create(judge: paula, content: "I dont know", score: 1)
+good = Response.create(judge: paula, content: "You gave us chills", score: 2)
+#
+
+#Randy Response
+bad = Response.create(judge: randy, content: "It was a little weird", score: 0)
+ok = Response.create(judge: randy, content: "It was alright", score: 1)
+good = Response.create(judge: randy, content: "It was kinda hot", score: 2)
+
+#Audience response
+
+# bad = Response.create(judge: randy, content: "Awful", score: 0)
+# ok = Response.create(judge: randy, content: "Do Better", score: 1)
+# good = Response.create(judge: randy, content: "Amazing", score: 2)

@@ -314,27 +314,75 @@ def create_user_2
   @band_2 = @user_2.bands.sample
 end
 
-def judge_scores
-  x = 0
-  y = 0
-  x += @simon.grade(@band_1)
-  x += @paula.grade(@band_1)
-  x += @randy.grade(@band_1)
-  y += @simon.grade(@band_2)
-  y += @paula.grade(@band_2)
-  y += @randy.grade(@band_2)
-  return x, y
+def judge_scores(band)
+
+  # binding.pry
+  judge_scores = {}
+
+  Judge.all.each do |judge|
+    judge_scores[judge.name] = judge.grade(band)
+  end
+
+
+  return judge_scores
 end
 
-def audience_scores
-  @audience_1 = @band_1.create_audience
-  @audience_2 = @band_2.create_audience
+# def create_audience(band)
+#   band.create_audience
+# end
 
-  x = @audience_1.grade(@band_1)
-  y = @audience_2.grade(@band_2)
 
-  return x, y
+def audience_scores(band)
+  @audience = band.create_audience
+  return @audience.grade(band)
 end
+#
+#
+
+def return_responses(band)
+  clear_screen
+  puts "And now, let's hear from the judges for #{band.name}!"
+  sleep(3)
+  Judge.all.each do |judge|
+    puts ""
+    puts "#{judge.name}'s Response"
+    puts ""
+    judge.evaluate_scores(band)
+    sleep(5)
+  end
+end
+
+
+# def play_band
+# #
+# # `afplay my_song.mp3`
+#
+#     create_user_2
+#     return_responses(@band_1)
+#     # binding.pry
+#     return_responses(@band_2)
+#
+#
+# #   #binding.pry
+#     band_1_score = judge_scores(@band_1).values.sum + audience_scores(@band_1) / 4
+#     band_2_score = judge_scores(@band_2).values.sum + audience_scores(@band_2) / 4
+# #   band_1_score = (score4)/4
+# #   band_2_score = (score3)/4
+# #
+# # # judge_results
+# #
+# clear_screen
+#
+#   if band_1_score > band_2_score
+#     puts "#{@band_1.name} is the winner!"
+#   elsif band_2_score > band_1_score
+#     puts "#{@band_2.name} is the winner!"
+#   elsif band_1_score == band_2_score
+#     puts "It's a tie!"
+#   end
+#
+# end
+
 
 def battle_sequence
   clear_screen
@@ -374,16 +422,19 @@ end
 
 def play_band
   pid = fork{ exec 'killall afplay'}
-  assign_judges
   create_user_2
 
   battle_sequence
 
-  score3, score4 = judge_scores
-  score1, score2 = audience_scores
 
-  band_1_score = (score1 + score3)/4
-  band_2_score = (score2 + score4)/4
+  return_responses(@band_1)
+  # binding.pry
+  return_responses(@band_2)
+
+  band_1_score = judge_scores(@band_1).values.sum + audience_scores(@band_1) / 4
+  band_2_score = judge_scores(@band_2).values.sum + audience_scores(@band_2) / 4
+#   #binding.pry
+
 
   if band_1_score > band_2_score
     clear_screen
@@ -406,3 +457,5 @@ def continue?
     exit_game
   end
 end
+
+################################################################
